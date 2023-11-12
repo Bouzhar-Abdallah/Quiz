@@ -51,7 +51,7 @@ public class AnswerService {
     public ResponseEntity<String> deleteAnswer(Long answerId) {
         boolean exists = answerRepository.existsById(answerId);
         if(!exists){
-            throw new IllegalStateException(
+            throw new ResourceNotFoundException(
                     "answer with id: "+answerId+" does not exist"
             );
         }

@@ -34,4 +34,5 @@ public class QuestionController {
     public ResponseEntity<String> deleteQuestion(@PathVariable("questionId") Long questionId){
         return questionService.deleteQuestion(questionId);
     }
+
 }
