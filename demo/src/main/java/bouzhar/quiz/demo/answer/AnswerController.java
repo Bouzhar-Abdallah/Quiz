@@ -2,6 +2,7 @@ package bouzhar.quiz.demo.answer;
 
 import bouzhar.quiz.demo.question.Question;
 import bouzhar.quiz.demo.validation.Validation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,16 @@ public class AnswerController {
     @GetMapping(path = "getAnswers")
     public List<Answer> getAnswers(){return answerService.getAnswers();}
     @PostMapping(path = "addAnswer")
-    public Answer addAnswer(@RequestBody Answer answer){
+    public ResponseEntity<Answer> addAnswer(@RequestBody @Valid Answer answer){
         return answerService.addAnswer(answer);
+    }
+    @PutMapping
+    public ResponseEntity<Answer> updateAnswer(@RequestBody @Valid Answer answer){
+        return answerService.updateAnswer(answer);
+    }
+    @DeleteMapping(path = "{answerId}")
+    public ResponseEntity<String> deleteAnswer(@PathVariable("answerId") Long answerId){
+        return answerService.deleteAnswer(answerId);
     }
 
 }
