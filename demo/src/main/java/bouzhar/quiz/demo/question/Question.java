@@ -55,4 +55,18 @@ public class Question implements Serializable{
     @ManyToOne()
     @JoinColumn(name = "subject_id")
     private Subject subject;
+
+    public QuestionDto toQuestionDto() {
+        QuestionDto questionDto = new QuestionDto();
+        questionDto.setId(this.id);
+        questionDto.setAnswersCount(this.answersCount);
+        questionDto.setCorrectAnsqersCount(this.correctAnsqersCount);
+        questionDto.setText(this.text);
+        questionDto.setDuration(this.duration);
+        questionDto.setScorePoints(this.scorePoints);
+        questionDto.setType(this.type);
+        questionDto.setLevel(this.level);
+        questionDto.setSubject(this.subject);
+        return questionDto;
+    }
 }

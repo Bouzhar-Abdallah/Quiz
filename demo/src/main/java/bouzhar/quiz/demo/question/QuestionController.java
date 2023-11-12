@@ -25,4 +25,13 @@ public class QuestionController {
     public ResponseEntity<?> addQuestion(@RequestBody @Valid QuestionDto question){
         return new ResponseEntity<>(questionService.addQuestion(question), HttpStatus.CREATED);
     }
+    @PutMapping
+    public ResponseEntity<QuestionDto> updateQuestion(@RequestBody @Valid QuestionDto questionDto){
+        questionService.updateQuestion(questionDto.getId(),questionDto);
+        return ResponseEntity.ok(questionService.findById(questionDto.getId()));
+    }
+    @DeleteMapping(path = "{questionId}")
+    public ResponseEntity<String> deleteQuestion(@PathVariable("questionId") Long questionId){
+        return questionService.deleteQuestion(questionId);
+    }
 }
