@@ -1,6 +1,8 @@
 package bouzhar.quiz.demo.subject;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +21,15 @@ public class SubjectController {
         return subjectService.getSubjects();
     }
     @PostMapping(path = "addSubject")
-    public Subject addSubject(@RequestBody Subject subject){
+    public ResponseEntity<Subject> addSubject(@RequestBody @Valid Subject subject){
         return subjectService.addSubject(subject);
+    }
+    @PutMapping
+    public ResponseEntity<Subject> updateSubject(@RequestBody @Valid Subject subject){
+        return subjectService.updateSubject(subject);
+    }
+    @DeleteMapping(path = "{subjectId}")
+    public ResponseEntity<String> deleteSubject(@PathVariable("subjectId") Long subjectId){
+        return subjectService.deleteSubject(subjectId);
     }
 }
