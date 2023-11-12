@@ -25,7 +25,7 @@ public class Subject {
     @NotNull
     @NonNull private String name;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Subject parent;
 /*
     @JsonIgnore
