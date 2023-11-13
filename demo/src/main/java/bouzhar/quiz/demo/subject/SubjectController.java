@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.subject;
 
+import bouzhar.quiz.demo.question.Question;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,14 @@ public class SubjectController {
     @GetMapping(path = "getSubjects")
     public List<Subject> getSubjects(){
         return subjectService.getSubjects();
+    }
+    @GetMapping(path = "getSubject/{subjectId}")
+    public ResponseEntity<?> getSubject(@PathVariable("subjectId") Long subjectId){
+        return subjectService.getSubject(subjectId);
+    }
+    @GetMapping(path = "{subjectId}/questions")
+    public ResponseEntity<List<Question>> getSubjectQuestions(@PathVariable("subjectId") Long subjectId){
+        return subjectService.getSubjectQuestions(subjectId);
     }
     @PostMapping(path = "addSubject")
     public ResponseEntity<Subject> addSubject(@RequestBody @Valid Subject subject){

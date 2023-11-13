@@ -1,6 +1,7 @@
 package bouzhar.quiz.demo.subject;
 
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
+import bouzhar.quiz.demo.question.Question;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -59,4 +60,19 @@ public class SubjectService {
         return ResponseEntity.ok("Subject deleted");
     }
 
+    public ResponseEntity<?> getSubject(Long subjectId) {
+        if (!subjectRepository.existsById(subjectId)) {
+            throw new ResourceNotFoundException("Subject does not exist");
+        }
+        Subject subject = subjectRepository.findById(subjectId).get();
+        return ResponseEntity.ok(subject);
+    }
+
+    public ResponseEntity<List<Question>> getSubjectQuestions(Long subjectId) {
+        if (!subjectRepository.existsById(subjectId)) {
+            throw new ResourceNotFoundException("Subject does not exist");
+        }
+        Subject subject = subjectRepository.findById(subjectId).get();
+        return ResponseEntity.ok(subject.getQuestionList());
+    }
 }

@@ -27,8 +27,7 @@ public class Subject {
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Subject parent;
-/*
     @JsonIgnore
     @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
-    private List<Question> questionList;*/
+    private List<Question> questionList;
 }
