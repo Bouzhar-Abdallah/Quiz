@@ -2,6 +2,8 @@ package bouzhar.quiz.demo.level;
 
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.level.dtos.LevelDto;
+import bouzhar.quiz.demo.question.Question;
+import bouzhar.quiz.demo.question.QuestionDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -71,5 +73,20 @@ public class LevelService {
         boolean exists = levelRepository.existsById(levelId);
         if (!exists) throw new IllegalStateException("level with id: " + levelId + " does not exist");
         levelRepository.deleteById(levelId);
+    }
+
+    public ResponseEntity<?> getLevel(Long levelId) {
+        Level existingLevel = levelRepository.findById(levelId)
+                .orElseThrow(() -> new ResourceNotFoundException("The level with ID " + levelId + " does not exist"));
+        return ResponseEntity.ok(existingLevel.toLevelDto());
+    }
+
+    public ResponseEntity<List<Question>> getLevelQuestions(Long levelId) {
+        Optional<Level> level = levelRepository.findById(levelId);
+        if (level.isPresent()) {
+            return ResponseEntity.ok(level.get().getQuestions());
+        } else {
+            throw new ResourceNotFoundException("The level with ID " + levelId + " does not exist");
+        }
     }
 }

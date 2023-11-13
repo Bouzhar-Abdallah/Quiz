@@ -2,6 +2,7 @@ package bouzhar.quiz.demo.level;
 
 import bouzhar.quiz.demo.level.dtos.LevelDto;
 import bouzhar.quiz.demo.question.Question;
+import bouzhar.quiz.demo.question.QuestionDto;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -33,7 +34,8 @@ public class Level {
     }
 
 
-/*    @JsonIgnore
+
+    @JsonIgnore
     @OneToMany(mappedBy = "level",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    private List<Question> questions;*/
+    private List<Question> questions;
 }

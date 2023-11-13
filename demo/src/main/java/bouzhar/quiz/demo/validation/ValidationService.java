@@ -51,15 +51,14 @@ public class ValidationService {
         validation.setAnswer(persistedAnswer);
         validation.setCorrect(isCorrect);
 
-        // Update the bidirectional relationship on both sides
+
         persistedAnswer.getValidations().add(validation);
-        // If you are using CascadeType.REMOVE, consider removing the following line
+
         validation.setAnswer(persistedAnswer);
 
         // Save the Validation entity
-        Validation savedValidation = validationRepository.save(validation);
 
-        return new Validation();
+        return validationRepository.save(validation);
     }
 
     public List<Validation> getValidations() {

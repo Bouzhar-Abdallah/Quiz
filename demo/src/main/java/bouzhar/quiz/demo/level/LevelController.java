@@ -1,6 +1,8 @@
 package bouzhar.quiz.demo.level;
 
 import bouzhar.quiz.demo.level.dtos.LevelDto;
+import bouzhar.quiz.demo.question.Question;
+import bouzhar.quiz.demo.question.QuestionDto;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,15 @@ public class LevelController {
     @GetMapping(path = "getLevels")
     public List<Level> getLevels() {
         return levelService.getLevels();
+    }
+
+    @GetMapping(path = "getLevel/{levelId}")
+    public ResponseEntity<?> getLevel(@PathVariable("levelId") Long levelId) {
+        return levelService.getLevel(levelId);
+    }
+    @GetMapping(path = "getLevel/{levelId}/questions")
+    public ResponseEntity<List<Question>> getLevelQuestions(@PathVariable("levelId") Long levelId) {
+        return levelService.getLevelQuestions(levelId);
     }
 
     @PostMapping(path = "addLevel"/*,consumes = MediaType.APPLICATION_JSON_VALUE*/)
