@@ -26,7 +26,7 @@ public class LevelController {
     }
 
     @GetMapping(path = "getLevels")
-    public List<Level> getLevels() {
+    public ResponseEntity<List<LevelDto>> getLevels() {
         return levelService.getLevels();
     }
 
@@ -45,14 +45,14 @@ public class LevelController {
     }
 
     @PutMapping()
-    public ResponseEntity<Level> updateLevel(
+    public ResponseEntity<LevelDto> updateLevel(
             @RequestBody @Valid LevelDto levelDto
     ) {
-        levelService.updateLevel(levelDto.getId(), levelDto);
-        return ResponseEntity.ok(levelService.findById(levelDto.getId()));
+        return levelService.updateLevel(levelDto.getId(), levelDto);
+        //return ResponseEntity.ok(levelService.findById(levelDto.getId()));
     }
 
-    @DeleteMapping(path = "deleteLevel/{levelId}")
+    @DeleteMapping(path = "{levelId}")
     public void deleteLevel(@PathVariable("levelId") Long levelId) {
         levelService.deleteLevel(levelId);
     }

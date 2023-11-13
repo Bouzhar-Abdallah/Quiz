@@ -29,11 +29,6 @@ public class Level {
     @Column(nullable = false)
     @NonNull private Float minPoints;
 
-    public LevelDto toLevelDto() {
-        return new LevelDto(this.id,this.description,this.maxPoints,this.minPoints);
-    }
-
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "level",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)

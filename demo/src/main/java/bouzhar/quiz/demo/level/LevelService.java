@@ -25,19 +25,22 @@ public class LevelService {
     private ModelMapper modelMapper;
 
 
-    public List<Level> getLevels() {
-        return levelRepository.findAll();
+    public ResponseEntity<List<LevelDto>> getLevels() {
+        return ResponseEntity.ok(levelRepository.findAll().stream()
+                .map(level -> modelMapper.map(level, LevelDto.class))
+                .toList());
     }
 
     public ResponseEntity<LevelDto> addNewLevel(LevelDto levelDto) {
-        // Check if a level with the same text already exists
+
         if (existsLevelByText(levelDto.getDescription())) {
             throw new ValidationException("Level with the same text already exists");
         }
 
         try {
-            Level createdLevel = levelRepository.save(levelDto.toLevel());
-            return new ResponseEntity<>(createdLevel.toLevelDto(), HttpStatus.CREATED);
+            Level createdLevel = levelRepository.save(modelMapper.map(levelDto, Level.class));
+            LevelDto createdLevelDto = modelMapper.map(createdLevel, LevelDto.class);
+            return new ResponseEntity<>(createdLevelDto, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ValidationException("Failed to create the level");
@@ -60,8 +63,8 @@ public class LevelService {
         existingLevel.setMinPoints(levelDto.getMinPoints());
 
         Level updatedLevel = levelRepository.save(existingLevel);
-
-        return ResponseEntity.ok(updatedLevel.toLevelDto());
+        LevelDto updatedLevelDto = modelMapper.map(updatedLevel, LevelDto.class);
+        return ResponseEntity.ok(updatedLevelDto);
 
     }
 
@@ -78,7 +81,7 @@ public class LevelService {
     public ResponseEntity<?> getLevel(Long levelId) {
         Level existingLevel = levelRepository.findById(levelId)
                 .orElseThrow(() -> new ResourceNotFoundException("The level with ID " + levelId + " does not exist"));
-        return ResponseEntity.ok(existingLevel.toLevelDto());
+        return ResponseEntity.ok(modelMapper.map(existingLevel, LevelDto.class));
     }
 
     public ResponseEntity<List<Question>> getLevelQuestions(Long levelId) {
