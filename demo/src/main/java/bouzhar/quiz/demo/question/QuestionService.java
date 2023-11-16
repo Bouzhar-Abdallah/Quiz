@@ -3,59 +3,60 @@ package bouzhar.quiz.demo.question;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.level.Level;
 import bouzhar.quiz.demo.level.LevelRepository;
-import bouzhar.quiz.demo.level.dtos.LevelDto;
+import bouzhar.quiz.demo.media.Media;
+import bouzhar.quiz.demo.media.MediaDto;
+import bouzhar.quiz.demo.media.MediaRepository;
+import bouzhar.quiz.demo.media.MediaService;
 import bouzhar.quiz.demo.subject.Subject;
 import bouzhar.quiz.demo.subject.SubjectRepository;
 import jakarta.transaction.Transactional;
+import org.apache.tomcat.util.digester.ArrayStack;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final LevelRepository levelRepository;
     private final SubjectRepository subjectRepository;
+    private final MediaService mediaService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public QuestionService(QuestionRepository questionRepository, ModelMapper modelMapper, LevelRepository levelRepository, SubjectRepository subjectRepository) {
+    public QuestionService(QuestionRepository questionRepository, LevelRepository levelRepository, SubjectRepository subjectRepository, MediaService mediaService, ModelMapper modelMapper) {
         this.questionRepository = questionRepository;
-        this.modelMapper = modelMapper;
         this.levelRepository = levelRepository;
         this.subjectRepository = subjectRepository;
+        this.mediaService = mediaService;
+        this.modelMapper = modelMapper;
     }
 
-    public List<Question> getQuestions(){
-        return questionRepository.findAll();
+    public List<QuestionDto> getQuestions() {
+        List<Question> questions =questionRepository.findAll();
+        return Arrays.asList(modelMapper.map(questions, QuestionDto[].class));
     }
 
-    public Question addQuestion(QuestionDto question) {
-        /*if (!levelRepository.existsById(question.getLevelId()))throw new ResourceNotFoundException("level with id: "+question.getLevelId()+" does not exist" );
-        if (!subjectRepository.existsById(question.getSubjectId()))throw new ResourceNotFoundException("subject with id: "+question.getSubjectId()+" does not exist" );*/
-        Level level = levelRepository.findById(question.getLevel().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Level not found with id: " + question.getLevel().getId()));
 
-        Subject subject = subjectRepository.findById(question.getSubject().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + question.getSubject().getId()));
+    public QuestionDto addQuestion(QuestionDto questionDto) {
+        levelRepository.findById(questionDto.getLevel().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Level not found with id: " + questionDto.getLevel().getId()));
 
-        try{
-            Question toCreateQuestion = modelMapper.map(question,Question.class);
-            questionRepository.save(toCreateQuestion);
-            Optional<Question> createdQuestion = questionRepository.findById(toCreateQuestion.getId());
-            System.out.println(createdQuestion.get().getLevel().toString());
-            return createdQuestion.orElse(null);
+        subjectRepository.findById(questionDto.getSubject().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + questionDto.getSubject().getId()));
 
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return new Question();
+        for (MediaDto mediaDto : questionDto.getMedias()) {
+            mediaDto.setQuestion(questionDto);
         }
+        Question savedQuestion = questionRepository.save(modelMapper.map(questionDto, Question.class));
 
+        return modelMapper.map(questionRepository.findById(savedQuestion.getId()).orElseThrow(() -> new ResourceNotFoundException("Operation Failed")),QuestionDto.class);
     }
 
 
@@ -78,21 +79,23 @@ public class QuestionService {
 
 
         Question updatedQuestion = questionRepository.save(existingQuestion);
-        return ResponseEntity.ok(updatedQuestion.toQuestionDto());
+        return ResponseEntity.ok(modelMapper.map(updatedQuestion,QuestionDto.class));
     }
 
-    public QuestionDto findById(Long id) {
-        return questionRepository.findById(id).get().toQuestionDto();
+    public ResponseEntity<QuestionDto> findById(Long id) {
+        Question question = questionRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("question not found"));
+        return ResponseEntity.ok(modelMapper.map(question,QuestionDto.class));
     }
 
     public ResponseEntity<String> deleteQuestion(Long questionId) {
         boolean exists = questionRepository.existsById(questionId);
-        if(!exists){
+        if (!exists) {
             throw new ResourceNotFoundException(
-                    "question with id: "+questionId+" does not exist"
+                    "question with id: " + questionId + " does not exist"
             );
         }
         questionRepository.deleteById(questionId);
-        return ResponseEntity.ok("Question with id: "+questionId+" deleted succesefully");
+        return ResponseEntity.ok("Question with id: " + questionId + " deleted succesefully");
     }
+
 }

@@ -1,4 +1,4 @@
-package bouzhar.quiz.demo.question;
+package bouzhar.quiz.demo.question.enums;
 
 public enum QuestionType {
     Single,

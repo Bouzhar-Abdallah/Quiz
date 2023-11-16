@@ -1,14 +1,16 @@
 package bouzhar.quiz.demo.question;
 
 import bouzhar.quiz.demo.level.Level;
+import bouzhar.quiz.demo.media.MediaDto;
+import bouzhar.quiz.demo.question.enums.QuestionType;
 import bouzhar.quiz.demo.subject.Subject;
 import bouzhar.quiz.demo.validation.Validation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -38,16 +40,14 @@ public class QuestionDto {
 
     private List<Validation> validations;
 
+
+    private List<MediaDto> medias;
     @NotNull(message = "level is required")
     private Level level;
     @NotNull(message = "subject is required")
     private Subject subject;
-
-    public Long getLevelId() {
-        return level.getId();
-    }
-
-    public Long getSubjectId() {
-        return subject.getId();
+    public void addToMedias(MediaDto media) {
+        media.setQuestion(this);
+        this.medias.add(media);
     }
 }

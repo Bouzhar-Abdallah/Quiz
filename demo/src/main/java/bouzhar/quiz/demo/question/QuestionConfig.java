@@ -3,6 +3,7 @@ package bouzhar.quiz.demo.question;
 import bouzhar.quiz.demo.answer.AnswerRepository;
 import bouzhar.quiz.demo.level.Level;
 import bouzhar.quiz.demo.level.LevelRepository;
+import bouzhar.quiz.demo.question.enums.QuestionType;
 import bouzhar.quiz.demo.subject.Subject;
 import bouzhar.quiz.demo.subject.SubjectRepository;
 import org.springframework.boot.CommandLineRunner;

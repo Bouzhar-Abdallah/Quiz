@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.question;
 
+import bouzhar.quiz.demo.media.MediaDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,17 +19,22 @@ public class QuestionController {
         this.questionService = questionService;
     }
     @GetMapping(path = "getQuestions")
-    public List<Question> getQuestions(){
+    public List<QuestionDto> getQuestions(){
         return questionService.getQuestions();
     }
-    @PostMapping(path = "addQuestion")
-    public ResponseEntity<?> addQuestion(@RequestBody @Valid QuestionDto question){
-        return new ResponseEntity<>(questionService.addQuestion(question), HttpStatus.CREATED);
+    @GetMapping(path = "getQuestion/{questionId}")
+    public ResponseEntity<?> getQuestionBiId(@PathVariable Long questionId){
+        return questionService.findById(questionId);
     }
+    @PostMapping(path = "addQuestion")
+    public ResponseEntity<?> addQuestion(@RequestBody @Valid QuestionDto questionDto){
+        //List<MediaDto> medias = questionDto.getMedias();
+        return new ResponseEntity<>(questionService.addQuestion(questionDto), HttpStatus.CREATED);
+    }
+
     @PutMapping
     public ResponseEntity<QuestionDto> updateQuestion(@RequestBody @Valid QuestionDto questionDto){
-        questionService.updateQuestion(questionDto.getId(),questionDto);
-        return ResponseEntity.ok(questionService.findById(questionDto.getId()));
+        return questionService.updateQuestion(questionDto.getId(),questionDto);
     }
     @DeleteMapping(path = "{questionId}")
     public ResponseEntity<String> deleteQuestion(@PathVariable("questionId") Long questionId){
