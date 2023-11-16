@@ -37,18 +37,18 @@ public class GlobalExceptionHandler {
         errors.put("validation error", validationErrors);
         return errors;
     }
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+/*    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ValidationException.class)
     public Map<String, String> handleValidationExceptions(ValidationException ex) {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("error", ex.getMessage());
         return errorResponse;
-    }
+    }*/
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException.class)
     public Map<String, String> handleGenericRuntimeExceptions(RuntimeException ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
+        errorResponse.put("generic handler error", ex.getMessage());
         return errorResponse;
     }
 
