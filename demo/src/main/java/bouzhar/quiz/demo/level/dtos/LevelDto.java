@@ -3,6 +3,7 @@ package bouzhar.quiz.demo.level.dtos;
 import bouzhar.quiz.demo.level.Level;
 import bouzhar.quiz.demo.question.Question;
 import bouzhar.quiz.demo.question.QuestionDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -32,6 +33,5 @@ public class LevelDto {
     @Min(value = 0,message = "Points can't be negative")
     private Float minPoints;
 
-
-    private List<QuestionDto> questions;
+    //private List<QuestionDto> questions;
 }
