@@ -21,7 +21,6 @@ public class Answer {
             strategy = GenerationType.IDENTITY
     )
     private long id;
-    @NotNull(message = "Answer cannot be null")
     @Column(nullable = false, unique = true)
     @NonNull private String answer;
 
