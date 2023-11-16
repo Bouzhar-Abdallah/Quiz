@@ -1,6 +1,8 @@
 package bouzhar.quiz.demo.subject;
 
+import bouzhar.quiz.demo.exception.ValidationException;
 import bouzhar.quiz.demo.question.Question;
+import bouzhar.quiz.demo.question.QuestionDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,16 +28,16 @@ public class SubjectController {
         return subjectService.getSubject(subjectId);
     }
     @GetMapping(path = "{subjectId}/questions")
-    public ResponseEntity<List<Question>> getSubjectQuestions(@PathVariable("subjectId") Long subjectId){
+    public ResponseEntity<List<QuestionDto>> getSubjectQuestions(@PathVariable("subjectId") Long subjectId){
         return subjectService.getSubjectQuestions(subjectId);
     }
     @PostMapping(path = "addSubject")
-    public ResponseEntity<Subject> addSubject(@RequestBody @Valid Subject subject){
-        return subjectService.addSubject(subject);
+    public ResponseEntity<SubjectDto> addSubject(@RequestBody @Valid SubjectDto subjectDto) throws ValidationException {
+        return subjectService.addSubject(subjectDto);
     }
     @PutMapping
-    public ResponseEntity<Subject> updateSubject(@RequestBody @Valid Subject subject){
-        return subjectService.updateSubject(subject);
+    public ResponseEntity<SubjectDto> updateSubject(@RequestBody @Valid SubjectDto subjectDto){
+        return subjectService.updateSubject(subjectDto);
     }
     @DeleteMapping(path = "{subjectId}")
     public ResponseEntity<String> deleteSubject(@PathVariable("subjectId") Long subjectId){

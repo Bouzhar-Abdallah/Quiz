@@ -2,7 +2,9 @@ package bouzhar.quiz.demo.subject;
 
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.question.Question;
+import bouzhar.quiz.demo.question.QuestionDto;
 import jakarta.validation.ValidationException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,44 +14,47 @@ import java.util.List;
 @Service
 public class SubjectService {
     private final SubjectRepository subjectRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository) {
+    public SubjectService(SubjectRepository subjectRepository, ModelMapper modelMapper) {
         this.subjectRepository = subjectRepository;
+        this.modelMapper = modelMapper;
     }
+
 
     public List<Subject> getSubjects() {
         return subjectRepository.findAll();
     }
 
-    public ResponseEntity<Subject> addSubject(Subject subject) {
-        if (existsSubjectByName(subject.getName())) {
+    public ResponseEntity<SubjectDto> addSubject(SubjectDto subjectDto) {
+        if (existsSubjectByName(subjectDto.getName())) {
             throw new ValidationException("Subject with the same name already exists");
         }
-        if (subject.getParent() != null) {
-            if (!subjectRepository.existsById(subject.getParent().getId())) {
+        if (subjectDto.getParent() != null) {
+            if (!subjectRepository.existsById(subjectDto.getParent().getId())) {
                 throw new ResourceNotFoundException("Parent subject does not exist");
             }
         }
-        Subject createdSubject = subjectRepository.save(subject);
-        return ResponseEntity.ok(createdSubject);
+        Subject createdSubject =subjectRepository.save(modelMapper.map(subjectDto,Subject.class));
+        return ResponseEntity.ok(modelMapper.map(createdSubject,SubjectDto.class));
     }
 
     private boolean existsSubjectByName(String name) {
         return subjectRepository.existsByName(name);
     }
 
-    public ResponseEntity<Subject> updateSubject(Subject subject) {
-        if (!subjectRepository.existsById(subject.getId())) {
+    public ResponseEntity<SubjectDto> updateSubject(SubjectDto subjectDto) {
+        if (!subjectRepository.existsById(subjectDto.getId())) {
             throw new ResourceNotFoundException("Subject does not exist");
         }
-        if (subject.getParent() != null) {
-            if (!subjectRepository.existsById(subject.getParent().getId())) {
+        if (subjectDto.getParent() != null) {
+            if (!subjectRepository.existsById(subjectDto.getParent().getId())) {
                 throw new ResourceNotFoundException("Parent subject does not exist");
             }
         }
-        Subject updatedSubject = subjectRepository.save(subject);
-        return ResponseEntity.ok(updatedSubject);
+        Subject updatedSubject = subjectRepository.save(modelMapper.map(subjectDto,Subject.class));
+        return ResponseEntity.ok(modelMapper.map(updatedSubject,SubjectDto.class));
     }
 
     public ResponseEntity<String> deleteSubject(Long subjectId) {
@@ -68,11 +73,12 @@ public class SubjectService {
         return ResponseEntity.ok(subject);
     }
 
-    public ResponseEntity<List<Question>> getSubjectQuestions(Long subjectId) {
-        if (!subjectRepository.existsById(subjectId)) {
-            throw new ResourceNotFoundException("Subject does not exist");
-        }
-        Subject subject = subjectRepository.findById(subjectId).get();
-        return ResponseEntity.ok(subject.getQuestionList());
+    public ResponseEntity<List<QuestionDto>> getSubjectQuestions(Long subjectId) {
+        Subject subject =subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + subjectId));
+
+        return ResponseEntity.ok(subject.getQuestionList().stream()
+                .map(question -> modelMapper.map(question, QuestionDto.class))
+                .toList());
     }
 }

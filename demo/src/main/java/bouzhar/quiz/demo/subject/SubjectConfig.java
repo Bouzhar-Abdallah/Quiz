@@ -11,8 +11,8 @@ public class SubjectConfig {
     @Bean
     CommandLineRunner subjectCommandLineRunner(SubjectRepository subjectRepository){
         return args -> {
-            Subject subject1 = new Subject("Programming");
-            Subject subject2 = new Subject("java");
+            Subject subject1 = new Subject("math");
+            Subject subject2 = new Subject("physique");
             subject2.setParent(subject1);
             subjectRepository.saveAll(List.of(subject1,subject2));
         };

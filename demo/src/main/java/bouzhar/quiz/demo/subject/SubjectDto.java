@@ -10,11 +10,10 @@ import lombok.*;
 @Setter
 @Getter
 public class SubjectDto {
-    @NotNull
+
     private Long id;
-    @NotNull
+
     private String name;
 
-    @ManyToOne()
     private Subject parent;
 }
