@@ -63,9 +63,9 @@ public class QuestionService {
     public ResponseEntity<QuestionDto> updateQuestion(Long id, QuestionDto questionDto) {
         Question existingQuestion = questionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("The question with ID " + id + " does not exist"));
-        Level level = levelRepository.findById(questionDto.getLevel().getId())
+        levelRepository.findById(questionDto.getLevel().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Level not found with id: " + questionDto.getLevel().getId()));
-        Subject subject = subjectRepository.findById(questionDto.getSubject().getId())
+        subjectRepository.findById(questionDto.getSubject().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + questionDto.getSubject().getId()));
 
         existingQuestion.setDuration(questionDto.getDuration());
@@ -82,18 +82,13 @@ public class QuestionService {
         return ResponseEntity.ok(modelMapper.map(updatedQuestion,QuestionDto.class));
     }
 
-    public ResponseEntity<QuestionDto> findById(Long id) {
-        Question question = questionRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("question not found"));
+    public ResponseEntity<QuestionDto> findById(Long questionId) {
+        Question question = questionRepository.findById(questionId).orElseThrow(()-> new ResourceNotFoundException("question not found"));
         return ResponseEntity.ok(modelMapper.map(question,QuestionDto.class));
     }
 
     public ResponseEntity<String> deleteQuestion(Long questionId) {
-        boolean exists = questionRepository.existsById(questionId);
-        if (!exists) {
-            throw new ResourceNotFoundException(
-                    "question with id: " + questionId + " does not exist"
-            );
-        }
+        questionRepository.findById(questionId).orElseThrow(()-> new ResourceNotFoundException("question not found"));
         questionRepository.deleteById(questionId);
         return ResponseEntity.ok("Question with id: " + questionId + " deleted succesefully");
     }
