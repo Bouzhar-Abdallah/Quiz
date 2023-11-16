@@ -26,6 +26,6 @@ public class Answer {
     @NonNull private String answer;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "answer")
+    @OneToMany(mappedBy = "answer",cascade = CascadeType.REMOVE)
     private List<Validation> validations;
 }
