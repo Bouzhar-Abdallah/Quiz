@@ -28,4 +28,8 @@ public class StudentController {
     public ResponseEntity<StudentDto> getStudent(@PathVariable Long student_id){
         return studentService.getStudent(student_id);
     }
+    @DeleteMapping(path = "{student_id}")
+    public ResponseEntity<?> deleteStudent(@PathVariable Long student_id){
+        return studentService.deleteStudent(student_id);
+    }
 }

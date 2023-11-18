@@ -9,7 +9,7 @@ public interface StudentServiceSpecification {
 
     ResponseEntity<StudentDto> updateStudent(Long id, StudentDto studentDto);
 
-    ResponseEntity<String> deleteStudent(Long Id);
+    ResponseEntity<StudentDto> deleteStudent(Long Id);
 
     ResponseEntity<StudentDto> getStudent(Long Id);
     ResponseEntity<List<StudentDto>> getAllStudents();

@@ -34,8 +34,10 @@ public class StudentService implements StudentServiceSpecification{
     }
 
     @Override
-    public ResponseEntity<String> deleteStudent(Long Id) {
-        return null;
+    public ResponseEntity<StudentDto> deleteStudent(Long id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("student with id"+ id +"not found"));
+                studentRepository.deleteById(id);
+        return ResponseEntity.ok(modelMapper.map(student,StudentDto.class));
     }
 
     @Override
