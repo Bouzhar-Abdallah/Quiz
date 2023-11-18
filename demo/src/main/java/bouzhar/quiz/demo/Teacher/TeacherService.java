@@ -44,6 +44,10 @@ public class TeacherService implements TeacherServiceSpecification {
 
     @Override
     public ResponseEntity<List<TeacherDto>> getAllTeachers() {
-        return null;
+        return ResponseEntity.ok(
+          teacherRepository.findAll().stream()
+                  .map(teacher -> modelMapper.map(teacher, TeacherDto.class))
+                  .toList()
+        );
     }
 }

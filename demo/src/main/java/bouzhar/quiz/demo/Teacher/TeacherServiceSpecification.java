@@ -1,6 +1,5 @@
 package bouzhar.quiz.demo.Teacher;
 
-import bouzhar.quiz.demo.student.StudentDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
