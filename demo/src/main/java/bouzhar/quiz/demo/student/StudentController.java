@@ -29,7 +29,12 @@ public class StudentController {
         return studentService.getStudent(student_id);
     }
     @DeleteMapping(path = "{student_id}")
-    public ResponseEntity<?> deleteStudent(@PathVariable Long student_id){
+    public ResponseEntity<StudentDto> deleteStudent(@PathVariable Long student_id){
         return studentService.deleteStudent(student_id);
     }
+    @PutMapping()
+    public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto studentDto){
+        return studentService.updateStudent(studentDto);
+    }
+
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface StudentServiceSpecification {
     ResponseEntity<StudentDto> addNewStudent(StudentDto studentDto);
 
-    ResponseEntity<StudentDto> updateStudent(Long id, StudentDto studentDto);
+    ResponseEntity<StudentDto> updateStudent(StudentDto studentDto);
 
     ResponseEntity<StudentDto> deleteStudent(Long Id);
 

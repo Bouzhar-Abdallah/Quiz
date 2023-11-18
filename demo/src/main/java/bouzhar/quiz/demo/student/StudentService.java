@@ -29,8 +29,13 @@ public class StudentService implements StudentServiceSpecification{
     }
 
     @Override
-    public ResponseEntity<StudentDto> updateStudent(Long id, StudentDto studentDto) {
-        return null;
+    public ResponseEntity<StudentDto> updateStudent(StudentDto studentDto) {
+        studentRepository.findById(studentDto.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("student with id"+ studentDto.getId() +"not found")
+        );
+        return ResponseEntity.ok(
+                modelMapper.map(studentRepository.save(modelMapper.map(studentDto,Student.class)),StudentDto.class)
+        );
     }
 
     @Override
