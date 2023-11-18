@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.Teacher;
 
+import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +39,12 @@ public class TeacherService implements TeacherServiceSpecification {
     }
 
     @Override
-    public ResponseEntity<TeacherDto> getTeacher(Long Id) {
-        return null;
+    public ResponseEntity<TeacherDto> getTeacher(Long id) {
+        return ResponseEntity.ok(
+          modelMapper.map(teacherRepository.findById(id).orElseThrow(
+                  () -> new ResourceNotFoundException("teacher with id "+ id +" not found")
+          ), TeacherDto.class)
+        );
     }
 
     @Override
