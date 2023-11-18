@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.student;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +24,8 @@ public class StudentController {
     public ResponseEntity<List<StudentDto>> addNewStudent(){
         return studentService.getAllStudents();
     }
-
+    @GetMapping(path = "{student_id}")
+    public ResponseEntity<StudentDto> getStudent(@PathVariable Long student_id){
+        return studentService.getStudent(student_id);
+    }
 }

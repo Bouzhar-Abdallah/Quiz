@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.student;
 
+import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,11 @@ public class StudentService implements StudentServiceSpecification{
     }
 
     @Override
-    public ResponseEntity<StudentDto> getStudent(Long Id) {
-        return null;
+    public ResponseEntity<StudentDto> getStudent(Long id) {
+        return ResponseEntity.ok(modelMapper.map(
+                studentRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("student with id"+ id +"not found")),
+                StudentDto.class
+        ));
     }
 
     @Override
