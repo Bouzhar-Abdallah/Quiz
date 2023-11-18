@@ -44,6 +44,8 @@ public class StudentService implements StudentServiceSpecification{
 
     @Override
     public ResponseEntity<List<StudentDto>> getAllStudents() {
-        return null;
+        return ResponseEntity.ok(studentRepository.findAll().stream()
+                .map(student -> modelMapper.map(student,StudentDto.class))
+                .toList());
     }
 }
