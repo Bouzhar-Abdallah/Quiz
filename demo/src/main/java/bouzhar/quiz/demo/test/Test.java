@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.test;
 
+import bouzhar.quiz.demo.assignement.Assignement;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -7,6 +8,7 @@ import jakarta.validation.groups.Default;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,5 +31,6 @@ public class Test {
     private String remarks;
     @NotEmpty(message = "instructions cannot be empty")
     private String instructions;
-
+    @OneToMany(mappedBy = "test")
+    private List<Assignement> assignements;
 }
