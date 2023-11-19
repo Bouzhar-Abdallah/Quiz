@@ -1,7 +1,5 @@
-package bouzhar.quiz.demo.Teacher;
+package bouzhar.quiz.demo.teacher;
 
-import bouzhar.quiz.demo.student.Student;
-import bouzhar.quiz.demo.student.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

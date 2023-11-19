@@ -1,4 +1,4 @@
-package bouzhar.quiz.demo.Teacher;
+package bouzhar.quiz.demo.teacher;
 
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;

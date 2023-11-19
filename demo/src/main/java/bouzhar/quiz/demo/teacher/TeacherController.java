@@ -1,4 +1,4 @@
-package bouzhar.quiz.demo.Teacher;
+package bouzhar.quiz.demo.teacher;
 
 
 import jakarta.validation.Valid;

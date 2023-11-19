@@ -1,4 +1,4 @@
-package bouzhar.quiz.demo.Teacher;
+package bouzhar.quiz.demo.teacher;
 
 import bouzhar.quiz.demo.parentClasses.PersonDto;
 import jakarta.validation.constraints.NotEmpty;
