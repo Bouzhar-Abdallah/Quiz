@@ -40,8 +40,14 @@ public class TeacherService implements TeacherServiceSpecification {
     }
 
     @Override
-    public ResponseEntity<TeacherDto> deleteTeacher(Long Id) {
-        return null;
+    public ResponseEntity<TeacherDto> deleteTeacher(Long id) {
+        Teacher teacher = teacherRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("teacher with id "+ id +" not found")
+        );
+        teacherRepository.deleteById(id);
+        return ResponseEntity.ok(
+                modelMapper.map(teacher,TeacherDto.class)
+        );
     }
 
     @Override
