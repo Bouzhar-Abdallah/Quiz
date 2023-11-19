@@ -21,13 +21,14 @@ public class TestController {
     public ResponseEntity<TestDto> addNewTest(@RequestBody @Valid TestDto testDto){
         return testService.addNewTest(testDto);
     }
-    /*@GetMapping(path = "getall")
+    @GetMapping(path = "{test_id}")
+    public ResponseEntity<TestDto> getTest(@PathVariable Long test_id){
+        return testService.getTest(test_id);
+    }
+    /*
+    @GetMapping(path = "getall")
     public ResponseEntity<List<TestDto>> addNewTest(){
         return testService.getAllTests();
-    }
-    @GetMapping(path = "{teacher_id}")
-    public ResponseEntity<TestDto> getTest(@PathVariable Long teacher_id){
-        return testService.getTest(teacher_id);
     }
     @DeleteMapping(path = "{teacher_id}")
     public ResponseEntity<TestDto> deleteTest(@PathVariable Long teacher_id){

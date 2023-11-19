@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.test;
 
+import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,15 @@ public class TestService implements TestServiceSpecification {
     }
 
     @Override
+    public ResponseEntity<TestDto> getTest(Long id) {
+        Test test = testRepository.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("test with id "+ id +" not found")
+        );
+        return ResponseEntity.ok(
+                modelMapper.map(test,TestDto.class)
+        );
+    }
+    @Override
     public ResponseEntity<TestDto> updateTest(TestDto testDto) {
         return null;
     }
@@ -35,10 +45,6 @@ public class TestService implements TestServiceSpecification {
         return null;
     }
 
-    @Override
-    public ResponseEntity<TestDto> getTest(Long Id) {
-        return null;
-    }
 
     @Override
     public ResponseEntity<List<TestDto>> getAllTests() {
