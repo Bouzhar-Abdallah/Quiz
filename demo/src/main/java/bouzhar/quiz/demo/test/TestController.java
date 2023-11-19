@@ -33,10 +33,10 @@ public class TestController {
     public ResponseEntity<TestDto> updateTest(@RequestBody TestDto testDto){
         return testService.updateTest(testDto);
     }
-    /*
-    @DeleteMapping(path = "{teacher_id}")
-    public ResponseEntity<TestDto> deleteTest(@PathVariable Long teacher_id){
-        return testService.deleteTest(teacher_id);
+
+    @DeleteMapping(path = "{test_id}")
+    public ResponseEntity<TestDto> deleteTest(@PathVariable Long test_id){
+        return testService.deleteTest(test_id);
     }
-    */
+
 }

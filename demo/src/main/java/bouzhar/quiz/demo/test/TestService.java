@@ -56,8 +56,14 @@ public class TestService implements TestServiceSpecification {
     }
 
     @Override
-    public ResponseEntity<TestDto> deleteTest(Long Id) {
-        return null;
+    public ResponseEntity<TestDto> deleteTest(Long id) {
+        Test test = testRepository.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("test with id "+ id +" not found")
+        );
+        testRepository.deleteById(id);
+        return ResponseEntity.ok(
+                modelMapper.map(test,TestDto.class)
+        );
     }
 
 
