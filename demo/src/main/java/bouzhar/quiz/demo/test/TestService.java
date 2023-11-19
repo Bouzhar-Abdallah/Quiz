@@ -36,6 +36,14 @@ public class TestService implements TestServiceSpecification {
         );
     }
     @Override
+    public ResponseEntity<List<TestDto>> getAllTests() {
+        return ResponseEntity.ok(
+                testRepository.findAll().stream()
+                        .map(test -> modelMapper.map(test,TestDto.class))
+                        .toList()
+        );
+    }
+    @Override
     public ResponseEntity<TestDto> updateTest(TestDto testDto) {
         return null;
     }
@@ -46,8 +54,4 @@ public class TestService implements TestServiceSpecification {
     }
 
 
-    @Override
-    public ResponseEntity<List<TestDto>> getAllTests() {
-        return null;
-    }
 }

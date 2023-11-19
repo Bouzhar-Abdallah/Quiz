@@ -25,11 +25,11 @@ public class TestController {
     public ResponseEntity<TestDto> getTest(@PathVariable Long test_id){
         return testService.getTest(test_id);
     }
-    /*
     @GetMapping(path = "getall")
     public ResponseEntity<List<TestDto>> addNewTest(){
         return testService.getAllTests();
     }
+    /*
     @DeleteMapping(path = "{teacher_id}")
     public ResponseEntity<TestDto> deleteTest(@PathVariable Long teacher_id){
         return testService.deleteTest(teacher_id);
