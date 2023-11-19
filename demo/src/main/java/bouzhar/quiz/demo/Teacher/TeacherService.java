@@ -30,7 +30,13 @@ public class TeacherService implements TeacherServiceSpecification {
 
     @Override
     public ResponseEntity<TeacherDto> updateTeacher(TeacherDto teacherDto) {
-        return null;
+        teacherRepository.findById(teacherDto.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("teacher with id "+ teacherDto.getId() +" not found")
+        );
+
+        return ResponseEntity.ok(
+                modelMapper.map(teacherRepository.save(modelMapper.map(teacherDto,Teacher.class)), TeacherDto.class)
+        );
     }
 
     @Override
