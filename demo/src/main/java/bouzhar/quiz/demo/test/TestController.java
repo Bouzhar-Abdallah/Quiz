@@ -29,13 +29,14 @@ public class TestController {
     public ResponseEntity<List<TestDto>> addNewTest(){
         return testService.getAllTests();
     }
+    @PutMapping()
+    public ResponseEntity<TestDto> updateTest(@RequestBody TestDto testDto){
+        return testService.updateTest(testDto);
+    }
     /*
     @DeleteMapping(path = "{teacher_id}")
     public ResponseEntity<TestDto> deleteTest(@PathVariable Long teacher_id){
         return testService.deleteTest(teacher_id);
     }
-    @PutMapping()
-    public ResponseEntity<TestDto> updateTest(@RequestBody TestDto testDto){
-        return testService.updateTest(testDto);
-    }*/
+    */
 }

@@ -45,7 +45,14 @@ public class TestService implements TestServiceSpecification {
     }
     @Override
     public ResponseEntity<TestDto> updateTest(TestDto testDto) {
-        return null;
+        testRepository.findById(testDto.getId()).orElseThrow(
+                ()-> new ResourceNotFoundException("test with id "+ testDto.getId() +" not found")
+        );
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        testRepository.save(modelMapper.map(testDto,Test.class))
+                        ,TestDto.class)
+        );
     }
 
     @Override
