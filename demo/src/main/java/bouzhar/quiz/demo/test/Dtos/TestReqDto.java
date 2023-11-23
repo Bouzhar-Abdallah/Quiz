@@ -1,17 +1,16 @@
-package bouzhar.quiz.demo.test;
+package bouzhar.quiz.demo.test.Dtos;
 
-import bouzhar.quiz.demo.assignement.Assignement;
-import bouzhar.quiz.demo.assignement.AssignementDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import bouzhar.quiz.demo.assignement.Dtos.AssignementResDto;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 
-public class TestDto {
+public class TestReqDto {
     private Long id;
 
+    private String title;
     private Integer duration;
     private Float successScore;
     private boolean showResults;
@@ -19,5 +18,5 @@ public class TestDto {
     private Integer maxAttempts;
     private String remarks;
     private String instructions;
-    private List<AssignementDto> assignementDtos;
+    private Long teacher_id;
 }

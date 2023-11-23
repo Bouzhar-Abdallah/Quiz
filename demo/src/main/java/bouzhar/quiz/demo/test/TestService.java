@@ -1,6 +1,16 @@
 package bouzhar.quiz.demo.test;
 
+import bouzhar.quiz.demo.assignement.Dtos.AssignementResDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
+import bouzhar.quiz.demo.question.Question;
+import bouzhar.quiz.demo.question.QuestionRepository;
+import bouzhar.quiz.demo.teacher.Teacher;
+import bouzhar.quiz.demo.teacher.TeacherRepository;
+import bouzhar.quiz.demo.temporization.Temporization;
+import bouzhar.quiz.demo.temporization.TemporizationId;
+import bouzhar.quiz.demo.temporization.TemporizationReqDto;
+import bouzhar.quiz.demo.test.Dtos.TestReqDto;
+import bouzhar.quiz.demo.test.Dtos.TestResDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,59 +20,97 @@ import java.util.List;
 
 @Service
 public class TestService implements TestServiceSpecification {
+
     private final TestRepository testRepository;
+    private final QuestionRepository questionRepository;
+    private final TeacherRepository teacherRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TestService(TestRepository testRepository, ModelMapper modelMapper) {
+    public TestService(TestRepository testRepository, QuestionRepository questionRepository, TeacherRepository teacherRepository, ModelMapper modelMapper) {
         this.testRepository = testRepository;
+        this.questionRepository = questionRepository;
+        this.teacherRepository = teacherRepository;
         this.modelMapper = modelMapper;
     }
 
+
     @Override
-    public ResponseEntity<TestDto> addNewTest(TestDto testDto) {
+    public ResponseEntity<TestResDto> addQuestion(TemporizationReqDto temporizationReqDto) {
+        Test test = testRepository.findById(temporizationReqDto.getTest_id()).orElseThrow(
+                ()-> new ResourceNotFoundException("test with id "+ temporizationReqDto.getTest_id() +" not found")
+        );
+        Question question = questionRepository.findById(temporizationReqDto.getQuestion_id()).orElseThrow(
+                ()-> new ResourceNotFoundException("question with id "+ temporizationReqDto.getQuestion_id() +" not found")
+        );
+        Temporization temporization = new Temporization();
+        temporization.setTemporizationId(new TemporizationId(question.getId(), test.getId()));
+        temporization.setQuestion(question);
+        temporization.setTest(test);
+        temporization.setDuration(temporizationReqDto.getDuration());
+        test.getTemporizations().add(temporization);
+        testRepository.save(test);
         return ResponseEntity.ok(
-                modelMapper.map(testRepository.save(modelMapper.map(testDto, Test.class)),TestDto.class)
+                modelMapper.map(test, TestResDto.class)
         );
     }
 
     @Override
-    public ResponseEntity<TestDto> getTest(Long id) {
+    public ResponseEntity<TestResDto> addNewTest(TestReqDto testReqDto) {
+        Teacher teacher = teacherRepository.findById(testReqDto.getTeacher_id()).orElseThrow(
+                ()-> new ResourceNotFoundException("teacher with id "+ testReqDto.getTeacher_id() +" not found")
+        );
+        Test test = modelMapper.map(testReqDto, Test.class);
+        test.setTeacher(teacher);
+        return ResponseEntity.ok(
+                modelMapper.map(testRepository.save(test), TestResDto.class)
+        );
+    }
+
+    @Override
+    public ResponseEntity<TestResDto> getTest(Long id) {
         Test test = testRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("test with id "+ id +" not found")
         );
+
+        TestResDto testResDto = modelMapper.map(test, TestResDto.class);
         return ResponseEntity.ok(
-                modelMapper.map(test,TestDto.class)
+                testResDto
         );
     }
     @Override
-    public ResponseEntity<List<TestDto>> getAllTests() {
+    public ResponseEntity<List<TestResDto>> getAllTests() {
         return ResponseEntity.ok(
                 testRepository.findAll().stream()
-                        .map(test -> modelMapper.map(test,TestDto.class))
+                        .map(test -> modelMapper.map(test, TestResDto.class))
                         .toList()
         );
     }
     @Override
-    public ResponseEntity<TestDto> updateTest(TestDto testDto) {
-        testRepository.findById(testDto.getId()).orElseThrow(
-                ()-> new ResourceNotFoundException("test with id "+ testDto.getId() +" not found")
+    public ResponseEntity<TestResDto> updateTest(TestReqDto testReqDto) {
+        testRepository.findById(testReqDto.getId()).orElseThrow(
+                ()-> new ResourceNotFoundException("test with id "+ testReqDto.getId() +" not found")
         );
+        Teacher teacher = teacherRepository.findById(testReqDto.getTeacher_id()).orElseThrow(
+                ()-> new ResourceNotFoundException("teacher with id "+ testReqDto.getTeacher_id() +" not found")
+        );
+        Test testToUpdate = modelMapper.map(testReqDto, Test.class);
+        testToUpdate.setTeacher(teacher);
         return ResponseEntity.ok(
                 modelMapper.map(
-                        testRepository.save(modelMapper.map(testDto,Test.class))
-                        ,TestDto.class)
+                        testRepository.save(testToUpdate)
+                        , TestResDto.class)
         );
     }
 
     @Override
-    public ResponseEntity<TestDto> deleteTest(Long id) {
+    public ResponseEntity<TestResDto> deleteTest(Long id) {
         Test test = testRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("test with id "+ id +" not found")
         );
         testRepository.deleteById(id);
         return ResponseEntity.ok(
-                modelMapper.map(test,TestDto.class)
+                modelMapper.map(test, TestResDto.class)
         );
     }
 

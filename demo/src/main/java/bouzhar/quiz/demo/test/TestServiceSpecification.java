@@ -1,17 +1,22 @@
 package bouzhar.quiz.demo.test;
 
 
+import bouzhar.quiz.demo.temporization.TemporizationReqDto;
+import bouzhar.quiz.demo.test.Dtos.TestReqDto;
+import bouzhar.quiz.demo.test.Dtos.TestResDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface TestServiceSpecification {
-    ResponseEntity<TestDto> addNewTest(TestDto testDto);
+    ResponseEntity<TestResDto> addNewTest(TestReqDto testResDto);
 
-    ResponseEntity<TestDto> updateTest(TestDto testDto);
+    ResponseEntity<TestResDto> updateTest(TestReqDto testResDto);
 
-    ResponseEntity<TestDto> deleteTest(Long Id);
+    ResponseEntity<TestResDto> deleteTest(Long Id);
 
-    ResponseEntity<TestDto> getTest(Long Id);
-    ResponseEntity<List<TestDto>> getAllTests();
+    ResponseEntity<TestResDto> getTest(Long Id);
+    ResponseEntity<List<TestResDto>> getAllTests();
+
+    ResponseEntity<TestResDto> addQuestion(TemporizationReqDto temporizationReqDto);
 }

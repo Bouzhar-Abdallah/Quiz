@@ -1,6 +1,10 @@
 package bouzhar.quiz.demo.test;
 
 import bouzhar.quiz.demo.assignement.Assignement;
+import bouzhar.quiz.demo.question.Question;
+import bouzhar.quiz.demo.teacher.Teacher;
+import bouzhar.quiz.demo.temporization.Temporization;
+import bouzhar.quiz.demo.validation.Validation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +21,9 @@ public class Test {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @NotEmpty(message = "title cannot be empty")
+    private String title;
     @NotNull(message = "duration must not be null")
     private Integer duration;
     @NotNull(message = "successScore must not be null")
@@ -31,6 +38,10 @@ public class Test {
     private String remarks;
     @NotEmpty(message = "instructions cannot be empty")
     private String instructions;
-    @OneToMany(mappedBy = "test")
+    @OneToMany(mappedBy = "test",fetch = FetchType.LAZY)
     private List<Assignement> assignements;
+    @ManyToOne()
+    private Teacher teacher;
+    @OneToMany(mappedBy = "test",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Temporization> temporizations;
 }

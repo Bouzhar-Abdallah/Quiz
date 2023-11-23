@@ -1,6 +1,8 @@
 package bouzhar.quiz.demo.test;
 
-import bouzhar.quiz.demo.teacher.TeacherDto;
+import bouzhar.quiz.demo.temporization.TemporizationReqDto;
+import bouzhar.quiz.demo.test.Dtos.TestReqDto;
+import bouzhar.quiz.demo.test.Dtos.TestResDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,25 +19,29 @@ public class TestController {
     public TestController(TestService testService) {
         this.testService = testService;
     }
-    @PostMapping(path = "addTest")
-    public ResponseEntity<TestDto> addNewTest(@RequestBody @Valid TestDto testDto){
-        return testService.addNewTest(testDto);
+    @PostMapping
+    public ResponseEntity<TestResDto> addNewTest(@RequestBody @Valid TestReqDto testResDto){
+        return testService.addNewTest(testResDto);
+    }
+    @PostMapping(path = "addQuestion")
+    public ResponseEntity<TestResDto> addNewTest(@RequestBody @Valid TemporizationReqDto temporizationReqDto){
+        return testService.addQuestion(temporizationReqDto);
     }
     @GetMapping(path = "{test_id}")
-    public ResponseEntity<TestDto> getTest(@PathVariable Long test_id){
+    public ResponseEntity<TestResDto> getTest(@PathVariable Long test_id){
         return testService.getTest(test_id);
     }
-    @GetMapping(path = "getall")
-    public ResponseEntity<List<TestDto>> addNewTest(){
+    @GetMapping
+    public ResponseEntity<List<TestResDto>> addNewTest(){
         return testService.getAllTests();
     }
     @PutMapping()
-    public ResponseEntity<TestDto> updateTest(@RequestBody TestDto testDto){
-        return testService.updateTest(testDto);
+    public ResponseEntity<TestResDto> updateTest(@RequestBody TestReqDto testResDto){
+        return testService.updateTest(testResDto);
     }
 
     @DeleteMapping(path = "{test_id}")
-    public ResponseEntity<TestDto> deleteTest(@PathVariable Long test_id){
+    public ResponseEntity<TestResDto> deleteTest(@PathVariable Long test_id){
         return testService.deleteTest(test_id);
     }
 
