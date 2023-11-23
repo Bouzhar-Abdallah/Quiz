@@ -14,10 +14,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ValidationId implements Serializable {
-    @Column(name = "question_id")
+    //@Column(name = "question_id")
     private Long questionId;
 
-    @Column(name = "answer_id")
+    //@Column(name = "answer_id")
     private Long answerId;
     @Override
     public boolean equals(Object o) {

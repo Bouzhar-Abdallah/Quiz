@@ -1,6 +1,7 @@
 package bouzhar.quiz.demo.question;
 
-import bouzhar.quiz.demo.media.MediaDto;
+import bouzhar.quiz.demo.question.dto.QuestionReqDto;
+import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/question")
+@RequestMapping(path = "api/v2/question")
 public class QuestionController {
     private final QuestionService questionService;
 
@@ -18,26 +19,29 @@ public class QuestionController {
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
-    @GetMapping(path = "getQuestions")
-    public List<QuestionDto> getQuestions(){
+
+    @GetMapping
+    public List<QuestionResDto> getQuestions() {
         return questionService.getQuestions();
     }
-    @GetMapping(path = "getQuestion/{questionId}")
-    public ResponseEntity<?> getQuestionBiId(@PathVariable Long questionId){
+
+    @GetMapping(path = "{questionId}")
+    public ResponseEntity<?> getQuestionBiId(@PathVariable Long questionId) {
         return questionService.findById(questionId);
     }
-    @PostMapping(path = "addQuestion")
-    public ResponseEntity<?> addQuestion(@RequestBody @Valid QuestionDto questionDto){
-        //List<MediaDto> medias = questionDto.getMedias();
-        return new ResponseEntity<>(questionService.addQuestion(questionDto), HttpStatus.CREATED);
+
+    @PostMapping(path = "")
+    public ResponseEntity<?> addQuestion(@RequestBody @Valid QuestionReqDto questionReqDto) {
+        return new ResponseEntity<>(questionService.addQuestion(questionReqDto), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<QuestionDto> updateQuestion(@RequestBody @Valid QuestionDto questionDto){
-        return questionService.updateQuestion(questionDto.getId(),questionDto);
+    public ResponseEntity<QuestionResDto> updateQuestion(@RequestBody @Valid QuestionReqDto questionReqDto) {
+        return questionService.updateQuestion(questionReqDto.getId(), questionReqDto);
     }
+
     @DeleteMapping(path = "{questionId}")
-    public ResponseEntity<String> deleteQuestion(@PathVariable("questionId") Long questionId){
+    public ResponseEntity<String> deleteQuestion(@PathVariable("questionId") Long questionId) {
         return questionService.deleteQuestion(questionId);
     }
 

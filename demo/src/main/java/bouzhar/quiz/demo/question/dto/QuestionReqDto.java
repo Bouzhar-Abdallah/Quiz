@@ -1,23 +1,26 @@
-package bouzhar.quiz.demo.question;
+package bouzhar.quiz.demo.question.dto;
 
 import bouzhar.quiz.demo.level.Level;
+import bouzhar.quiz.demo.media.Media;
 import bouzhar.quiz.demo.media.MediaDto;
 import bouzhar.quiz.demo.question.enums.QuestionType;
 import bouzhar.quiz.demo.subject.Subject;
-import bouzhar.quiz.demo.validation.Validation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import bouzhar.quiz.demo.validation.Dto.ValidationResQuestionDto;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigInteger;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-public class QuestionDto {
+public class QuestionReqDto {
 
     @NotNull(message ="Id can't be null")
     private long id;
@@ -38,16 +41,11 @@ public class QuestionDto {
     private QuestionType type;
 
 
-    private List<Validation> validations;
 
-
-    private List<MediaDto> medias;
+    private List<Media> medias;
     @NotNull(message = "level is required")
-    private Level level;
+    private Long level_id;
     @NotNull(message = "subject is required")
-    private Subject subject;
-    public void addToMedias(MediaDto media) {
-        media.setQuestion(this);
-        this.medias.add(media);
-    }
+    private Long subject_id;
+
 }

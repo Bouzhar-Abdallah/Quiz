@@ -1,8 +1,7 @@
 package bouzhar.quiz.demo.media;
 
 
-import bouzhar.quiz.demo.question.Question;
-import bouzhar.quiz.demo.question.QuestionDto;
+import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import bouzhar.quiz.demo.question.enums.MediaType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EnumType;
@@ -16,6 +15,4 @@ public class MediaDto {
     @Enumerated(EnumType.STRING)
     private MediaType type;
 
-    @JsonIgnore
-    private QuestionDto question;
 }

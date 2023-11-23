@@ -1,11 +1,8 @@
 package bouzhar.quiz.demo.level;
 
-import bouzhar.quiz.demo.level.dtos.LevelDto;
 import bouzhar.quiz.demo.question.Question;
-import bouzhar.quiz.demo.question.QuestionDto;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;

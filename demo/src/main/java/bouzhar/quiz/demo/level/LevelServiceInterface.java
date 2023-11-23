@@ -1,7 +1,7 @@
 package bouzhar.quiz.demo.level;
 
 import bouzhar.quiz.demo.level.dtos.LevelDto;
-import bouzhar.quiz.demo.question.QuestionDto;
+import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 
@@ -19,5 +19,5 @@ public interface LevelServiceInterface {
 
     ResponseEntity<LevelDto> getLevel(Long levelId);
 
-    ResponseEntity<List<QuestionDto>> getLevelQuestions(Long levelId);
+    ResponseEntity<List<QuestionResDto>> getLevelQuestions(Long levelId);
 }

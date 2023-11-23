@@ -5,20 +5,17 @@ import bouzhar.quiz.demo.level.Level;
 import bouzhar.quiz.demo.level.LevelRepository;
 import bouzhar.quiz.demo.media.Media;
 import bouzhar.quiz.demo.media.MediaDto;
-import bouzhar.quiz.demo.media.MediaRepository;
 import bouzhar.quiz.demo.media.MediaService;
+import bouzhar.quiz.demo.question.dto.QuestionReqDto;
+import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import bouzhar.quiz.demo.subject.Subject;
 import bouzhar.quiz.demo.subject.SubjectRepository;
-import jakarta.transaction.Transactional;
-import org.apache.tomcat.util.digester.ArrayStack;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,53 +35,57 @@ public class QuestionService {
         this.modelMapper = modelMapper;
     }
 
-    public List<QuestionDto> getQuestions() {
+    public List<QuestionResDto> getQuestions() {
         List<Question> questions =questionRepository.findAll();
-        return Arrays.asList(modelMapper.map(questions, QuestionDto[].class));
+        return Arrays.asList(modelMapper.map(questions, QuestionResDto[].class));
     }
 
 
-    public QuestionDto addQuestion(QuestionDto questionDto) {
-        levelRepository.findById(questionDto.getLevel().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Level not found with id: " + questionDto.getLevel().getId()));
+    public QuestionResDto addQuestion(QuestionReqDto questionReqDto) {
+        Level level = levelRepository.findById(questionReqDto.getLevel_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Level not found with id: " + questionReqDto.getLevel_id()));
 
-        subjectRepository.findById(questionDto.getSubject().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + questionDto.getSubject().getId()));
-
-        for (MediaDto mediaDto : questionDto.getMedias()) {
-            mediaDto.setQuestion(questionDto);
+        Subject subject = subjectRepository.findById(questionReqDto.getSubject_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + questionReqDto.getSubject_id()));
+        Question question = modelMapper.map(questionReqDto, Question.class);
+        question.setLevel(level);
+        question.setSubject(subject);
+        for (Media mediaDto : questionReqDto.getMedias()) {
+            mediaDto.setQuestion(question);
         }
-        Question savedQuestion = questionRepository.save(modelMapper.map(questionDto, Question.class));
+        Question savedQuestion = questionRepository.save(question);
+        //Question savedQuestion = questionRepository.save(modelMapper.map(questionReqDto, Question.class));
 
-        return modelMapper.map(questionRepository.findById(savedQuestion.getId()).orElseThrow(() -> new ResourceNotFoundException("Operation Failed")),QuestionDto.class);
+        return modelMapper.map(questionRepository.findById(savedQuestion.getId()).orElseThrow(() -> new ResourceNotFoundException("Operation Failed")), QuestionResDto.class);
     }
 
 
-    public ResponseEntity<QuestionDto> updateQuestion(Long id, QuestionDto questionDto) {
+    public ResponseEntity<QuestionResDto> updateQuestion(Long id, QuestionReqDto questionReqDto) {
         Question existingQuestion = questionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("The question with ID " + id + " does not exist"));
-        levelRepository.findById(questionDto.getLevel().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Level not found with id: " + questionDto.getLevel().getId()));
-        subjectRepository.findById(questionDto.getSubject().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + questionDto.getSubject().getId()));
+        Level level = levelRepository.findById(questionReqDto.getLevel_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Level not found with id: " + questionReqDto.getLevel_id()));
 
-        existingQuestion.setDuration(questionDto.getDuration());
-        existingQuestion.setText(questionDto.getText());
-        existingQuestion.setAnswersCount(questionDto.getAnswersCount());
-        existingQuestion.setCorrectAnsqersCount(questionDto.getCorrectAnsqersCount());
-        existingQuestion.setScorePoints(questionDto.getScorePoints());
-        existingQuestion.setType(questionDto.getType());
-        existingQuestion.setSubject(questionDto.getSubject());
-        existingQuestion.setLevel(questionDto.getLevel());
+        Subject subject = subjectRepository.findById(questionReqDto.getSubject_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + questionReqDto.getSubject_id()));
+
+        existingQuestion.setDuration(questionReqDto.getDuration());
+        existingQuestion.setText(questionReqDto.getText());
+        existingQuestion.setAnswersCount(questionReqDto.getAnswersCount());
+        existingQuestion.setCorrectAnsqersCount(questionReqDto.getCorrectAnsqersCount());
+        existingQuestion.setScorePoints(questionReqDto.getScorePoints());
+        existingQuestion.setType(questionReqDto.getType());
+        existingQuestion.setSubject(subject);
+        existingQuestion.setLevel(level);
 
 
         Question updatedQuestion = questionRepository.save(existingQuestion);
-        return ResponseEntity.ok(modelMapper.map(updatedQuestion,QuestionDto.class));
+        return ResponseEntity.ok(modelMapper.map(updatedQuestion, QuestionResDto.class));
     }
 
-    public ResponseEntity<QuestionDto> findById(Long questionId) {
+    public ResponseEntity<QuestionResDto> findById(Long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow(()-> new ResourceNotFoundException("question not found"));
-        return ResponseEntity.ok(modelMapper.map(question,QuestionDto.class));
+        return ResponseEntity.ok(modelMapper.map(question, QuestionResDto.class));
     }
 
     public ResponseEntity<String> deleteQuestion(Long questionId) {

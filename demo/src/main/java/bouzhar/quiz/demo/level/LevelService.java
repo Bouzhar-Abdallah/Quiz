@@ -2,7 +2,7 @@ package bouzhar.quiz.demo.level;
 
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.level.dtos.LevelDto;
-import bouzhar.quiz.demo.question.QuestionDto;
+import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 import org.modelmapper.ModelMapper;
@@ -87,10 +87,10 @@ public class LevelService implements LevelServiceInterface{
     }
 
     @Override
-    public ResponseEntity<List<QuestionDto>> getLevelQuestions(Long levelId) {
+    public ResponseEntity<List<QuestionResDto>> getLevelQuestions(Long levelId) {
         Level level = levelRepository.findById(levelId).orElseThrow(()->new ResourceNotFoundException("The level with ID " + levelId + " does not exist"));
         return ResponseEntity.ok(level.getQuestions().stream()
-                .map(question -> modelMapper.map(question, QuestionDto.class))
+                .map(question -> modelMapper.map(question, QuestionResDto.class))
                 .toList());
     }
 }

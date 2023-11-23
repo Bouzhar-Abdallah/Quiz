@@ -1,8 +1,7 @@
 package bouzhar.quiz.demo.subject;
 
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
-import bouzhar.quiz.demo.question.Question;
-import bouzhar.quiz.demo.question.QuestionDto;
+import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import jakarta.validation.ValidationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,12 +72,13 @@ public class SubjectService {
         return ResponseEntity.ok(subject);
     }
 
-    public ResponseEntity<List<QuestionDto>> getSubjectQuestions(Long subjectId) {
+    public ResponseEntity<List<QuestionResDto>> getSubjectQuestions(Long subjectId) {
         Subject subject =subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + subjectId));
 
         return ResponseEntity.ok(subject.getQuestionList().stream()
-                .map(question -> modelMapper.map(question, QuestionDto.class))
+                .map(question -> modelMapper.map(question, QuestionResDto.class))
                 .toList());
     }
+
 }

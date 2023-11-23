@@ -80,4 +80,14 @@ public class GlobalExceptionHandler {
         errorResponse.put("data integrity violation error", errorMessage);
         return errorResponse;
     }
+/*    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    @ExceptionHandler(StackOverflowError.class)
+    public Map<String, String> handleStackOverflowError(StackOverflowError ex) {
+        // Log the error for debugging purposes
+        ex.printStackTrace();
+
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "Internal Server Error");
+        return errorResponse;
+    }*/
 }

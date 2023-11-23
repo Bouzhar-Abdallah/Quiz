@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/answer")
+@RequestMapping(path = "api/v2/answer")
 public class AnswerController {
     private final AnswerServiceI answerService;
 
@@ -22,9 +22,9 @@ public class AnswerController {
     * Methods
     *
     * */
-    @GetMapping(path = "getAnswers")
+    @GetMapping()
     public ResponseEntity<List<AnswerDto>> getAnswers(){return answerService.getAnswers();}
-    @PostMapping(path = "addAnswer")
+    @PostMapping()
     public ResponseEntity<AnswerDto> addAnswer(@RequestBody @Valid AnswerDto answerDto){
         return answerService.addAnswer(answerDto);
     }
@@ -36,7 +36,7 @@ public class AnswerController {
     public ResponseEntity<String> deleteAnswer(@PathVariable("answerId") Long answerId){
         return answerService.deleteAnswer(answerId);
     }
-    @GetMapping(path = "getAnswer/{answerId}")
+    @GetMapping(path = "{answerId}")
     public ResponseEntity<AnswerDto> getAnswer(@PathVariable("answerId") Long answerId){
         return answerService.getAnswer(answerId);
     }
