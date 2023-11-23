@@ -1,6 +1,7 @@
 package bouzhar.quiz.demo.teacher;
 
 
+import bouzhar.quiz.demo.teacher.Dto.TeacherDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,11 @@ public class TeacherController {
     public TeacherController(TeacherService teacherService) {
         this.teacherService = teacherService;
     }
-    @PostMapping(path = "addTeacher")
+    @PostMapping
     public ResponseEntity<TeacherDto> addNewTeacher(@RequestBody @Valid TeacherDto teacherDto){
         return teacherService.addNewTeacher(teacherDto);
     }
-    @GetMapping(path = "getall")
+    @GetMapping
     public ResponseEntity<List<TeacherDto>> addNewTeacher(){
         return teacherService.getAllTeachers();
     }

@@ -1,6 +1,7 @@
 package bouzhar.quiz.demo.teacher;
 
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
+import bouzhar.quiz.demo.teacher.Dto.TeacherDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
