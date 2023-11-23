@@ -26,7 +26,7 @@ public class LevelController {
     }
 
     @GetMapping(path = "{levelId}")
-    public ResponseEntity<?> getLevel(@PathVariable("levelId") Long levelId) {
+    public ResponseEntity<LevelDto> getLevel(@PathVariable("levelId") Long levelId) {
         return levelService.getLevel(levelId);
     }
     @GetMapping(path = "{levelId}/questions")
