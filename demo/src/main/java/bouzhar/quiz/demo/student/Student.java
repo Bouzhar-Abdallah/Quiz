@@ -2,10 +2,7 @@ package bouzhar.quiz.demo.student;
 
 import bouzhar.quiz.demo.assignement.Assignement;
 import bouzhar.quiz.demo.parentClasses.Person;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +16,6 @@ import java.util.List;
 
 public final class Student extends Person {
     private LocalDate regestrationDate;
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student",fetch = FetchType.LAZY)
     private List<Assignement> assignements;
 }

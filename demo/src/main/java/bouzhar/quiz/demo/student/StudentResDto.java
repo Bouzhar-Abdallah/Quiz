@@ -10,7 +10,7 @@ import java.util.List;
 
 @Setter
 @Getter
-public class StudentDto extends PersonDto {
+public class StudentResDto extends PersonDto {
     private LocalDate regestrationDate;
-    //private List<AssignementResDto> assignements;
+    private List<AssignementResDto> assignements;
 }

@@ -16,11 +16,11 @@ public class StudentController {
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
-    @PostMapping(path = "addStudent")
+    @PostMapping
     public ResponseEntity<StudentDto> addNewStudent(@RequestBody StudentDto studentDto){
         return studentService.addNewStudent(studentDto);
     }
-    @GetMapping(path = "getall")
+    @GetMapping
     public ResponseEntity<List<StudentDto>> addNewStudent(){
         return studentService.getAllStudents();
     }
@@ -37,4 +37,8 @@ public class StudentController {
         return studentService.updateStudent(studentDto);
     }
 
+/*    @GetMapping(path = "test/{student_id}")
+    public ResponseEntity<StudentDto> getStudentlazy(@PathVariable Long student_id){
+        return studentService.getStudentLazy(student_id);
+    }*/
 }
