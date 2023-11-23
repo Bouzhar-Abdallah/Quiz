@@ -1,17 +1,21 @@
 package bouzhar.quiz.demo.assignement;
 
 
+import bouzhar.quiz.demo.assignement.Dtos.AssignementListReqDto;
+import bouzhar.quiz.demo.assignement.Dtos.AssignementReqDto;
+import bouzhar.quiz.demo.assignement.Dtos.AssignementResDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface AssignementServiceSpecification {
-    ResponseEntity<AssignementDto> addNewAssignement(AssignementDto testDto);
+    ResponseEntity<AssignementResDto> addNewAssignement(AssignementReqDto testDto);
+    ResponseEntity<List<AssignementResDto>> addAssignementList(AssignementListReqDto testDto);
 
-    ResponseEntity<AssignementDto> updateAssignement(AssignementDto testDto);
+    ResponseEntity<AssignementResDto> updateAssignement(AssignementReqDto testDto);
 
-    ResponseEntity<AssignementDto> deleteAssignement(Long Id);
+    ResponseEntity<AssignementResDto> deleteAssignement(Long Id);
 
-    ResponseEntity<AssignementDto> getAssignement(Long Id);
-    ResponseEntity<List<AssignementDto>> getAllAssignements();
+    ResponseEntity<AssignementResDto> getAssignement(Long Id);
+    ResponseEntity<List<AssignementResDto>> getAllAssignements();
 }

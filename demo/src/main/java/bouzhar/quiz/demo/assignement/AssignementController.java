@@ -1,5 +1,8 @@
 package bouzhar.quiz.demo.assignement;
 
+import bouzhar.quiz.demo.assignement.Dtos.AssignementListReqDto;
+import bouzhar.quiz.demo.assignement.Dtos.AssignementReqDto;
+import bouzhar.quiz.demo.assignement.Dtos.AssignementResDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,24 +20,28 @@ public class AssignementController {
         this.assignementService = assignementService;
     }
     @PostMapping(path = "addAssignement")
-    public ResponseEntity<AssignementDto> addNewAssignement(@RequestBody @Valid AssignementDto assignementDto){
+    public ResponseEntity<AssignementResDto> addNewAssignement(@RequestBody @Valid AssignementReqDto assignementDto){
         return assignementService.addNewAssignement(assignementDto);
     }
+    @PostMapping(path = "addAssignementList")
+    public ResponseEntity<List<AssignementResDto>> addNewAssignement(@RequestBody @Valid AssignementListReqDto assignementDto){
+        return assignementService.addAssignementList(assignementDto);
+    }
     @GetMapping(path = "{assignement_id}")
-    public ResponseEntity<AssignementDto> getAssignement(@PathVariable Long assignement_id){
+    public ResponseEntity<AssignementResDto> getAssignement(@PathVariable Long assignement_id){
         return assignementService.getAssignement(assignement_id);
     }
     @GetMapping(path = "getall")
-    public ResponseEntity<List<AssignementDto>> addNewAssignement(){
+    public ResponseEntity<List<AssignementResDto>> getAll(){
         return assignementService.getAllAssignements();
     }
     @PutMapping()
-    public ResponseEntity<AssignementDto> updateAssignement(@RequestBody AssignementDto assignementDto){
+    public ResponseEntity<AssignementResDto> updateAssignement(@RequestBody AssignementReqDto assignementDto){
         return assignementService.updateAssignement(assignementDto);
     }
 
     @DeleteMapping(path = "{assignement_id}")
-    public ResponseEntity<AssignementDto> deleteAssignement(@PathVariable Long assignement_id){
+    public ResponseEntity<AssignementResDto> deleteAssignement(@PathVariable Long assignement_id){
         return assignementService.deleteAssignement(assignement_id);
     }
 

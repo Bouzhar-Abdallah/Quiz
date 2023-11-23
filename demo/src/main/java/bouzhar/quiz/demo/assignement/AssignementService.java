@@ -1,5 +1,8 @@
 package bouzhar.quiz.demo.assignement;
 
+import bouzhar.quiz.demo.assignement.Dtos.AssignementListReqDto;
+import bouzhar.quiz.demo.assignement.Dtos.AssignementReqDto;
+import bouzhar.quiz.demo.assignement.Dtos.AssignementResDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.student.StudentRepository;
 import bouzhar.quiz.demo.test.TestRepository;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,61 +31,87 @@ public class AssignementService implements AssignementServiceSpecification {
 
 
     @Override
-    public ResponseEntity<AssignementDto> addNewAssignement(AssignementDto assignementDto) {
-        testRepository.findById(assignementDto.getTest().getId()).orElseThrow(
-                ()-> new ResourceNotFoundException("test with id "+ assignementDto.getTest().getId() +" not found")
-        );
-        studentRepository.findById(assignementDto.getStudent().getId()).orElseThrow(
-                ()-> new ResourceNotFoundException("student with id "+ assignementDto.getStudent().getId() +" not found")
-        );
+    public ResponseEntity<AssignementResDto> addNewAssignement(AssignementReqDto assignementDto) {
+        Assignement assignement = modelMapper.map(assignementDto, Assignement.class);
+
+        assignement.setStudent(studentRepository.findById(assignementDto.getStudent_id()).orElseThrow(
+                () -> new ResourceNotFoundException("student with id " + assignementDto.getStudent_id() + " not found")
+        ));
+        assignement.setTest(testRepository.findById(assignementDto.getTest_id()).orElseThrow(
+                () -> new ResourceNotFoundException("test with id " + assignementDto.getTest_id() + " not found")
+        ));
+
         return ResponseEntity.ok(
-                modelMapper.map(assignementRepository.save(modelMapper.map(assignementDto, Assignement.class)), AssignementDto.class)
+                modelMapper.map(assignementRepository.save(assignement), AssignementResDto.class)
         );
     }
 
     @Override
-    public ResponseEntity<AssignementDto> getAssignement(Long id) {
+    public ResponseEntity<List<AssignementResDto>> addAssignementList(AssignementListReqDto testDto) {
+        List<AssignementResDto> assignementResDtos = new ArrayList<>();
+        testDto.getStudent_ids().forEach(student_id -> {
+            AssignementReqDto assignementReqDto = modelMapper.map(testDto, AssignementReqDto.class);
+
+            Assignement assignement = modelMapper.map(assignementReqDto, Assignement.class);
+
+            assignement.setStudent(studentRepository.findById(student_id).orElseThrow(
+                    () -> new ResourceNotFoundException("student with id " + student_id + " not found")
+            ));
+            assignement.setTest(testRepository.findById(assignementReqDto.getTest_id()).orElseThrow(
+                    () -> new ResourceNotFoundException("test with id " + assignementReqDto.getTest_id() + " not found")
+            ));
+            assignementRepository.save(assignement);
+
+            assignementResDtos.add(modelMapper.map(assignement, AssignementResDto.class ));
+        });
+        return ResponseEntity.ok(assignementResDtos);
+    }
+
+    @Override
+    public ResponseEntity<AssignementResDto> getAssignement(Long id) {
         Assignement assignement = assignementRepository.findById(id).orElseThrow(
-                ()-> new ResourceNotFoundException("assignement with id "+ id +" not found")
+                () -> new ResourceNotFoundException("assignement with id " + id + " not found")
         );
         return ResponseEntity.ok(
-                modelMapper.map(assignement, AssignementDto.class)
+                modelMapper.map(assignement, AssignementResDto.class)
         );
     }
+
     @Override
-    public ResponseEntity<List<AssignementDto>> getAllAssignements() {
+    public ResponseEntity<List<AssignementResDto>> getAllAssignements() {
         return ResponseEntity.ok(
                 assignementRepository.findAll().stream()
-                        .map(assignement -> modelMapper.map(assignement, AssignementDto.class))
+                        .map(assignement -> modelMapper.map(assignement, AssignementResDto.class))
                         .toList()
         );
     }
+
     @Override
-    public ResponseEntity<AssignementDto> updateAssignement(AssignementDto assignementDto) {
+    public ResponseEntity<AssignementResDto> updateAssignement(AssignementReqDto assignementDto) {
         assignementRepository.findById(assignementDto.getId()).orElseThrow(
-                ()-> new ResourceNotFoundException("assignement with id "+ assignementDto.getId() +" not found")
+                () -> new ResourceNotFoundException("assignement with id " + assignementDto.getId() + " not found")
         );
-        testRepository.findById(assignementDto.getTest().getId()).orElseThrow(
-                ()-> new ResourceNotFoundException("test with id "+ assignementDto.getTest().getId() +" not found")
+        testRepository.findById(assignementDto.getTest_id()).orElseThrow(
+                () -> new ResourceNotFoundException("test with id " + assignementDto.getTest_id() + " not found")
         );
-        studentRepository.findById(assignementDto.getStudent().getId()).orElseThrow(
-                ()-> new ResourceNotFoundException("student with id "+ assignementDto.getStudent().getId() +" not found")
+        studentRepository.findById(assignementDto.getStudent_id()).orElseThrow(
+                () -> new ResourceNotFoundException("student with id " + assignementDto.getStudent_id() + " not found")
         );
         return ResponseEntity.ok(
                 modelMapper.map(
                         assignementRepository.save(modelMapper.map(assignementDto, Assignement.class))
-                        , AssignementDto.class)
+                        , AssignementResDto.class)
         );
     }
 
     @Override
-    public ResponseEntity<AssignementDto> deleteAssignement(Long id) {
+    public ResponseEntity<AssignementResDto> deleteAssignement(Long id) {
         Assignement assignement = assignementRepository.findById(id).orElseThrow(
-                ()-> new ResourceNotFoundException("assignement with id "+ id +" not found")
+                () -> new ResourceNotFoundException("assignement with id " + id + " not found")
         );
         assignementRepository.deleteById(id);
         return ResponseEntity.ok(
-                modelMapper.map(assignement, AssignementDto.class)
+                modelMapper.map(assignement, AssignementResDto.class)
         );
     }
 
