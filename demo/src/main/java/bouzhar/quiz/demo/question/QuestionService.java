@@ -69,6 +69,7 @@ public class QuestionService {
         Subject subject = subjectRepository.findById(questionReqDto.getSubject_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + questionReqDto.getSubject_id()));
 
+        existingQuestion.setDuration(questionReqDto.getDuration());
         existingQuestion.setText(questionReqDto.getText());
         existingQuestion.setAnswersCount(questionReqDto.getAnswersCount());
         existingQuestion.setCorrectAnsqersCount(questionReqDto.getCorrectAnsqersCount());
