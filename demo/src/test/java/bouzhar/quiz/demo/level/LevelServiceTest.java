@@ -4,19 +4,13 @@ import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.exception.ValidationException;
 import bouzhar.quiz.demo.level.dtos.LevelDto;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +22,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-/*@ExtendWith(MockitoExtension.class)
- */
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 @SpringBootTest
 class LevelServiceTest {
