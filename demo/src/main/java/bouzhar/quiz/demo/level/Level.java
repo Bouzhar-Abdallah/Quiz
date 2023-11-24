@@ -10,7 +10,8 @@ import java.util.List;
 @Entity
 @Table
 @Data
-
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Level {

@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Builder
 public class LevelDto {
     private long id;
 
