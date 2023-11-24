@@ -32,7 +32,8 @@ public class QuestionController {
 
     @PostMapping(path = "")
     public ResponseEntity<?> addQuestion(@RequestBody @Valid QuestionReqDto questionReqDto) {
-        return new ResponseEntity<>(questionService.addQuestion(questionReqDto), HttpStatus.CREATED);
+        return questionService.addQuestion(questionReqDto);
+        //return new ResponseEntity<>(questionService.addQuestion(questionReqDto), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -41,7 +42,7 @@ public class QuestionController {
     }
 
     @DeleteMapping(path = "{questionId}")
-    public ResponseEntity<String> deleteQuestion(@PathVariable("questionId") Long questionId) {
+    public ResponseEntity<QuestionResDto> deleteQuestion(@PathVariable("questionId") Long questionId) {
         return questionService.deleteQuestion(questionId);
     }
 

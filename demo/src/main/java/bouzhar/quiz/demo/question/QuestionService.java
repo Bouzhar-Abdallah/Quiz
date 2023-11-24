@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class QuestionService {
+public class QuestionService implements QuestionServiceSpecification {
     private final QuestionRepository questionRepository;
     private final LevelRepository levelRepository;
     private final SubjectRepository subjectRepository;
@@ -35,13 +35,14 @@ public class QuestionService {
         this.modelMapper = modelMapper;
     }
 
+    @Override
     public List<QuestionResDto> getQuestions() {
         List<Question> questions =questionRepository.findAll();
         return Arrays.asList(modelMapper.map(questions, QuestionResDto[].class));
     }
 
-
-    public QuestionResDto addQuestion(QuestionReqDto questionReqDto) {
+@Override
+    public ResponseEntity<QuestionResDto> addQuestion(QuestionReqDto questionReqDto) {
         Level level = levelRepository.findById(questionReqDto.getLevel_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Level not found with id: " + questionReqDto.getLevel_id()));
 
@@ -54,12 +55,13 @@ public class QuestionService {
             mediaDto.setQuestion(question);
         }
         Question savedQuestion = questionRepository.save(question);
-        //Question savedQuestion = questionRepository.save(modelMapper.map(questionReqDto, Question.class));
 
-        return modelMapper.map(questionRepository.findById(savedQuestion.getId()).orElseThrow(() -> new ResourceNotFoundException("Operation Failed")), QuestionResDto.class);
+        /*return ResponseEntity.ok(modelMapper.map(questionRepository.findById(savedQuestion.getId()).orElseThrow(() -> new ResourceNotFoundException("Operation Failed")), QuestionResDto.class));*/
+        return ResponseEntity.ok(modelMapper.map(savedQuestion, QuestionResDto.class));
     }
 
 
+    @Override
     public ResponseEntity<QuestionResDto> updateQuestion(Long id, QuestionReqDto questionReqDto) {
         Question existingQuestion = questionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("The question with ID " + id + " does not exist"));
@@ -82,15 +84,17 @@ public class QuestionService {
         return ResponseEntity.ok(modelMapper.map(updatedQuestion, QuestionResDto.class));
     }
 
+    @Override
     public ResponseEntity<QuestionResDto> findById(Long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow(()-> new ResourceNotFoundException("question not found"));
         return ResponseEntity.ok(modelMapper.map(question, QuestionResDto.class));
     }
 
-    public ResponseEntity<String> deleteQuestion(Long questionId) {
-        questionRepository.findById(questionId).orElseThrow(()-> new ResourceNotFoundException("question not found"));
+    @Override
+    public ResponseEntity<QuestionResDto> deleteQuestion(Long questionId) {
+        Question question = questionRepository.findById(questionId).orElseThrow(()-> new ResourceNotFoundException("question not found"));
         questionRepository.deleteById(questionId);
-        return ResponseEntity.ok("Question with id: " + questionId + " deleted succesefully");
+        return ResponseEntity.ok(modelMapper.map(question,QuestionResDto.class));
     }
 
 }
