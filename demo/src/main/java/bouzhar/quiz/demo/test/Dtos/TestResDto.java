@@ -1,5 +1,7 @@
 package bouzhar.quiz.demo.test.Dtos;
 
+import bouzhar.quiz.demo.assignment.Dtos.AssignmentResDto;
+import bouzhar.quiz.demo.assignment.Dtos.AssignmentSimpleDto;
 import bouzhar.quiz.demo.teacher.Dto.TeacherDto;
 import bouzhar.quiz.demo.temporization.Temporization;
 import bouzhar.quiz.demo.temporization.TemporizationResDto;
@@ -22,5 +24,5 @@ public class TestResDto {
     private String instructions;
     private List<TemporizationResDto> temporizations;
     private TeacherDto teacher;
-    //private List<AssignementResDto> assignements;
+    private List<AssignmentSimpleDto> assignments;
 }

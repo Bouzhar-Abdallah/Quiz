@@ -1,9 +1,6 @@
 package bouzhar.quiz.demo.test.Dtos;
 
-import bouzhar.quiz.demo.assignement.Dtos.AssignementResDto;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 

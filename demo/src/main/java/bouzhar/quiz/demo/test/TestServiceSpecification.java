@@ -9,14 +9,10 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface TestServiceSpecification {
-    ResponseEntity<TestResDto> addNewTest(TestReqDto testResDto);
-
-    ResponseEntity<TestResDto> updateTest(TestReqDto testResDto);
-
-    ResponseEntity<TestResDto> deleteTest(Long Id);
-
-    ResponseEntity<TestResDto> getTest(Long Id);
-    ResponseEntity<List<TestResDto>> getAllTests();
-
-    ResponseEntity<TestResDto> addQuestion(TemporizationReqDto temporizationReqDto);
+    TestResDto addNewTest(TestReqDto testResDto);
+    TestResDto getTest(Long Id);
+    List<TestResDto> getAllTests();
+    TestResDto updateTest(TestReqDto testResDto);
+    TestResDto deleteTest(Long Id);
+    TestResDto addQuestion(TemporizationReqDto temporizationReqDto);
 }
