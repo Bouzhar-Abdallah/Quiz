@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Teacher extends Person {
-    private LocalDate regestrationDate;
+    private LocalDate registrationDate;
     private String speciality;
     @OneToMany(mappedBy = "teacher",fetch = FetchType.LAZY)
     private List<Test> tests;

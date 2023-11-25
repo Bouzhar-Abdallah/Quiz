@@ -2,6 +2,7 @@ package bouzhar.quiz.demo.teacher;
 
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.teacher.Dto.TeacherDto;
+import bouzhar.quiz.demo.teacher.Dto.TeacherResDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,51 +22,59 @@ public class TeacherService implements TeacherServiceSpecification {
         this.modelMapper = modelMapper;
     }
 
+    /*
+     *
+     * Methods
+     *
+     * */
+
+    // add new teacher
     @Override
-    public ResponseEntity<TeacherDto> addNewTeacher(TeacherDto teacherDto) {
-        if (teacherDto.getRegestrationDate() == null)teacherDto.setRegestrationDate(LocalDate.now());
-        return ResponseEntity.ok(
-                modelMapper.map(teacherRepository.save(modelMapper.map(teacherDto,Teacher.class)), TeacherDto.class)
-        );
+    public TeacherResDto addNewTeacher(TeacherDto teacherDto) {
+        if (teacherDto.getRegistrationDate() == null) teacherDto.setRegistrationDate(LocalDate.now());
+        return
+                modelMapper.map(teacherRepository.save(modelMapper.map(teacherDto, Teacher.class)), TeacherResDto.class);
     }
 
+    // get all teacher
     @Override
-    public ResponseEntity<TeacherDto> updateTeacher(TeacherDto teacherDto) {
+    public TeacherResDto getTeacher(Long id) {
+        return
+                modelMapper.map(teacherRepository.findById(id).orElseThrow(
+                        () -> new ResourceNotFoundException("teacher with id " + id + " not found")
+                ), TeacherResDto.class);
+    }
+
+    // get all teachers
+    @Override
+    public List<TeacherResDto> getAllTeachers() {
+        return
+                teacherRepository.findAll().stream()
+                        .map(teacher -> modelMapper.map(teacher, TeacherResDto.class))
+                        .toList();
+    }
+
+    // update teacher
+    @Override
+    public TeacherResDto updateTeacher(TeacherDto teacherDto) {
         teacherRepository.findById(teacherDto.getId()).orElseThrow(
-                () -> new ResourceNotFoundException("teacher with id "+ teacherDto.getId() +" not found")
+                () -> new ResourceNotFoundException("teacher with id " + teacherDto.getId() + " not found")
         );
 
-        return ResponseEntity.ok(
-                modelMapper.map(teacherRepository.save(modelMapper.map(teacherDto,Teacher.class)), TeacherDto.class)
-        );
+        return
+                modelMapper.map(teacherRepository.save(modelMapper.map(teacherDto, Teacher.class)), TeacherResDto.class);
     }
 
+    // delete teacher
     @Override
-    public ResponseEntity<TeacherDto> deleteTeacher(Long id) {
+    public TeacherResDto deleteTeacher(Long id) {
         Teacher teacher = teacherRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("teacher with id "+ id +" not found")
+                () -> new ResourceNotFoundException("teacher with id " + id + " not found")
         );
+        if (!teacher.getTests().isEmpty())
+            throw new IllegalStateException("teacher with id " + id + " has tests, deleting it could lead to data loss");
         teacherRepository.deleteById(id);
-        return ResponseEntity.ok(
-                modelMapper.map(teacher,TeacherDto.class)
-        );
-    }
-
-    @Override
-    public ResponseEntity<TeacherDto> getTeacher(Long id) {
-        return ResponseEntity.ok(
-          modelMapper.map(teacherRepository.findById(id).orElseThrow(
-                  () -> new ResourceNotFoundException("teacher with id "+ id +" not found")
-          ), TeacherDto.class)
-        );
-    }
-
-    @Override
-    public ResponseEntity<List<TeacherDto>> getAllTeachers() {
-        return ResponseEntity.ok(
-          teacherRepository.findAll().stream()
-                  .map(teacher -> modelMapper.map(teacher, TeacherDto.class))
-                  .toList()
-        );
+        return
+                modelMapper.map(teacher, TeacherResDto.class);
     }
 }

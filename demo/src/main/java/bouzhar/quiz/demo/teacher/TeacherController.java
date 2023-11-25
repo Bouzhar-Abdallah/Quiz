@@ -2,6 +2,7 @@ package bouzhar.quiz.demo.teacher;
 
 
 import bouzhar.quiz.demo.teacher.Dto.TeacherDto;
+import bouzhar.quiz.demo.teacher.Dto.TeacherResDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,24 +19,40 @@ public class TeacherController {
     public TeacherController(TeacherService teacherService) {
         this.teacherService = teacherService;
     }
+
+    /*
+     *
+     * Methods
+     *
+     * */
+
+    // add new teacher
     @PostMapping
-    public ResponseEntity<TeacherDto> addNewTeacher(@RequestBody @Valid TeacherDto teacherDto){
+    public TeacherResDto addNewTeacher(@RequestBody @Valid TeacherDto teacherDto) {
         return teacherService.addNewTeacher(teacherDto);
     }
-    @GetMapping
-    public ResponseEntity<List<TeacherDto>> addNewTeacher(){
-        return teacherService.getAllTeachers();
-    }
+
+    // get teacher
     @GetMapping(path = "{teacher_id}")
-    public ResponseEntity<TeacherDto> getTeacher(@PathVariable Long teacher_id){
+    public TeacherResDto getTeacher(@PathVariable Long teacher_id) {
         return teacherService.getTeacher(teacher_id);
     }
-    @DeleteMapping(path = "{teacher_id}")
-    public ResponseEntity<TeacherDto> deleteTeacher(@PathVariable Long teacher_id){
-        return teacherService.deleteTeacher(teacher_id);
+
+    // get all teacher
+    @GetMapping
+    public List<TeacherResDto> addAllTeachers() {
+        return teacherService.getAllTeachers();
     }
+
+    // update teacher
     @PutMapping()
-    public ResponseEntity<TeacherDto> updateTeacher(@RequestBody TeacherDto teacherDto){
+    public TeacherResDto updateTeacher(@RequestBody TeacherDto teacherDto) {
         return teacherService.updateTeacher(teacherDto);
+    }
+
+    // delete teacher
+    @DeleteMapping(path = "{teacher_id}")
+    public TeacherResDto deleteTeacher(@PathVariable Long teacher_id) {
+        return teacherService.deleteTeacher(teacher_id);
     }
 }

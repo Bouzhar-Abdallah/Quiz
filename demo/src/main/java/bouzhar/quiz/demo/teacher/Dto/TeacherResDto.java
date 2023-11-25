@@ -2,7 +2,7 @@ package bouzhar.quiz.demo.teacher.Dto;
 
 import bouzhar.quiz.demo.parentClasses.PersonDto;
 import bouzhar.quiz.demo.test.Dtos.TestResSimpleAttributesDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import bouzhar.quiz.demo.test.Test;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherDto extends PersonDto {
+public class TeacherResDto extends PersonDto {
     private LocalDate registrationDate;
     private String speciality;
+    private List<TestResSimpleAttributesDto> tests;
 }
