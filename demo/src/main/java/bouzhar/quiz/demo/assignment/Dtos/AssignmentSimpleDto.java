@@ -1,13 +1,12 @@
-package bouzhar.quiz.demo.assignement.Dtos;
+package bouzhar.quiz.demo.assignment.Dtos;
 
-import jakarta.validation.constraints.NotNull;
+import bouzhar.quiz.demo.test.Dtos.TestResSimpleAttributesDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-public class AssignementListReqDto {
+public class AssignmentSimpleDto {
     private Long id;
 
     private LocalDateTime startDate;
@@ -20,9 +19,4 @@ public class AssignementListReqDto {
 
     private Float obtainedScore;
 
-    @NotNull
-    private Long test_id;
-
-    @NotNull
-    private List<Long> student_ids;
 }

@@ -1,28 +1,30 @@
-package bouzhar.quiz.demo.assignement;
+package bouzhar.quiz.demo.assignment;
 
-import bouzhar.quiz.demo.question.Question;
 import bouzhar.quiz.demo.student.Student;
 import bouzhar.quiz.demo.test.Test;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
-public class Assignement {
+public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@NotNull(message = "duration must not be null")
+    @NotNull(message = "start date must not be null")
     private LocalDateTime startDate;
 
+    @NotNull(message = "end date must not be null")
     private LocalDateTime endDate;
 
+    private String reason;
+
+    @Min(value = 1, message = "chance must be greater than 0")
     private Integer chance;
 
     private boolean result;

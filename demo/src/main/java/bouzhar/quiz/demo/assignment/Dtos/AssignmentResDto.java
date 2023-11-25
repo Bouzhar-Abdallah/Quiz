@@ -1,4 +1,4 @@
-package bouzhar.quiz.demo.assignement.Dtos;
+package bouzhar.quiz.demo.assignment.Dtos;
 
 import bouzhar.quiz.demo.test.Dtos.TestResSimpleAttributesDto;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class AssignementResDto {
+public class AssignmentResDto {
     private Long id;
 
     private LocalDateTime startDate;
@@ -21,9 +21,4 @@ public class AssignementResDto {
 
     private TestResSimpleAttributesDto test;
 
-    /*@NotNull
-    //@JsonProperty("test")
-    private TestDto test;*/
-
-    //private List<StudentDto> students;
 }

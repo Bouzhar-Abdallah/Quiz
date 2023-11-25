@@ -1,8 +1,8 @@
-package bouzhar.quiz.demo.assignement;
+package bouzhar.quiz.demo.assignment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AssignementRepository extends JpaRepository<Assignement,Long> {
+public interface AssignmentRepository extends JpaRepository<Assignment,Long> {
 }
