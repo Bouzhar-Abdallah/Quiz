@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    //handling resource not found errors
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public Map<String, String> handleResourceNotFoundException(ResourceNotFoundException ex) {
@@ -24,7 +24,16 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
-    //handling validation errors
+    //handling illegal state errors
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(IllegalStateException.class)
+    public Map<String, String> handleIllegalStateException(IllegalStateException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("Data error", ex.getMessage());
+        return errorResponse;
+    }
+
+    //handling persistence validation errors
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -41,20 +50,15 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
-    /*    @ResponseStatus(HttpStatus.BAD_REQUEST)
-        @ExceptionHandler(ValidationException.class)
-        public Map<String, String> handleValidationExceptions(ValidationException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
-            return errorResponse;
-        }*/
-/*    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(RuntimeException.class)
-    public Map<String, String> handleGenericRuntimeExceptions(RuntimeException ex) {
+    //handling custom validation errors
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CustomValidationException.class)
+    public Map<String, String> handleCustomValidationExceptions(CustomValidationException ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("generic handler error", ex.getMessage());
+        errorResponse.put("error", ex.getMessage());
         return errorResponse;
-    }*/
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public Map<String, Object> handleConstraintViolationException(ConstraintViolationException ex) {
@@ -70,24 +74,5 @@ public class GlobalExceptionHandler {
         errors.put("constraint violation error", validationErrors);
         return errors;
     }
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public Map<String, String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
 
-        String errorMessage = ex.getRootCause().getMessage();
-
-        errorResponse.put("data integrity violation error", errorMessage);
-        return errorResponse;
-    }
-/*    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
-    @ExceptionHandler(StackOverflowError.class)
-    public Map<String, String> handleStackOverflowError(StackOverflowError ex) {
-        // Log the error for debugging purposes
-        ex.printStackTrace();
-
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "Internal Server Error");
-        return errorResponse;
-    }*/
 }
