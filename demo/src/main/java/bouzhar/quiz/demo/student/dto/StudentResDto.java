@@ -1,6 +1,6 @@
-package bouzhar.quiz.demo.student;
+package bouzhar.quiz.demo.student.dto;
 
-import bouzhar.quiz.demo.assignement.Dtos.AssignementResDto;
+import bouzhar.quiz.demo.assignment.Dtos.AssignmentResDto;
 import bouzhar.quiz.demo.parentClasses.PersonDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,6 @@ import java.util.List;
 @Setter
 @Getter
 public class StudentResDto extends PersonDto {
-    private LocalDate regestrationDate;
-    private List<AssignementResDto> assignements;
+    private LocalDate registrationDate;
+    private List<AssignmentResDto> assignments;
 }

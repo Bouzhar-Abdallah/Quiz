@@ -1,17 +1,19 @@
 package bouzhar.quiz.demo.student;
 
+import bouzhar.quiz.demo.student.dto.StudentDto;
+import bouzhar.quiz.demo.student.dto.StudentResDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface StudentServiceSpecification {
-    ResponseEntity<StudentDto> addNewStudent(StudentDto studentDto);
+    StudentResDto addNewStudent(StudentDto studentDto);
 
-    ResponseEntity<StudentDto> updateStudent(StudentDto studentDto);
+    StudentResDto updateStudent(StudentDto studentDto);
 
-    ResponseEntity<StudentDto> deleteStudent(Long Id);
+    StudentResDto deleteStudent(Long Id);
 
-    ResponseEntity<StudentDto> getStudent(Long Id);
-    ResponseEntity<List<StudentDto>> getAllStudents();
+    StudentResDto getStudent(Long Id);
+    List<StudentResDto> getAllStudents();
 
 }

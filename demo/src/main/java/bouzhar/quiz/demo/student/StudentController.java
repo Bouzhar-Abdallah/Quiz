@@ -1,7 +1,9 @@
 package bouzhar.quiz.demo.student;
 
-import jakarta.validation.constraints.NotNull;
+import bouzhar.quiz.demo.student.dto.StudentDto;
+import bouzhar.quiz.demo.student.dto.StudentResDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,29 +18,46 @@ public class StudentController {
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
+
+    /*
+     *
+     * Methods
+     *
+     * */
+
+    // add new student
     @PostMapping
-    public ResponseEntity<StudentDto> addNewStudent(@RequestBody StudentDto studentDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public StudentResDto addNewStudent(@RequestBody StudentDto studentDto) {
         return studentService.addNewStudent(studentDto);
     }
-    @GetMapping
-    public ResponseEntity<List<StudentDto>> addNewStudent(){
-        return studentService.getAllStudents();
-    }
+
+    // get student by id
     @GetMapping(path = "{student_id}")
-    public ResponseEntity<StudentDto> getStudent(@PathVariable Long student_id){
+    @ResponseStatus(HttpStatus.OK)
+    public StudentResDto getStudent(@PathVariable Long student_id) {
         return studentService.getStudent(student_id);
     }
-    @DeleteMapping(path = "{student_id}")
-    public ResponseEntity<StudentDto> deleteStudent(@PathVariable Long student_id){
-        return studentService.deleteStudent(student_id);
+
+    // get all students
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<StudentResDto> getStudents() {
+        return studentService.getAllStudents();
     }
+
+    // update student
     @PutMapping()
-    public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto studentDto){
+    @ResponseStatus(HttpStatus.OK)
+    public StudentResDto updateStudent(@RequestBody StudentDto studentDto) {
         return studentService.updateStudent(studentDto);
     }
 
-/*    @GetMapping(path = "test/{student_id}")
-    public ResponseEntity<StudentDto> getStudentlazy(@PathVariable Long student_id){
-        return studentService.getStudentLazy(student_id);
-    }*/
+    // delete student
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(path = "{student_id}")
+    public StudentResDto deleteStudent(@PathVariable Long student_id) {
+        return studentService.deleteStudent(student_id);
+    }
+
 }
