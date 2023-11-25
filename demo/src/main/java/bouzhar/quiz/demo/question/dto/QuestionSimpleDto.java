@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.question.dto;
 
+
 import bouzhar.quiz.demo.question.enums.QuestionType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,10 +15,9 @@ import java.math.BigInteger;
 public class QuestionSimpleDto {
     private long id;
     private Integer answersCount;
-    private Integer correctAnsqersCount;
+    private Integer correctAnswersCount;
     private String text;
-    private BigInteger duration;
     private Float scorePoints;
- //   @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private QuestionType type;
 }

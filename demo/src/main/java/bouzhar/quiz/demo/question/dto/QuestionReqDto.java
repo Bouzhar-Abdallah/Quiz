@@ -8,6 +8,7 @@ import bouzhar.quiz.demo.subject.Subject;
 import bouzhar.quiz.demo.validation.Dto.ValidationResQuestionDto;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,30 +23,14 @@ import java.util.List;
 @NoArgsConstructor
 public class QuestionReqDto {
 
-    @NotNull(message ="Id can't be null")
     private long id;
-    @NotNull(message ="Answer count can't be 0" )
     private Integer answersCount;
-    @NotNull(message = "correct answer count can't be 0")
-    private Integer correctAnsqersCount;
-    @NotNull(message = "text can't be null")
-    @NotBlank(message = "question text can't be null")
+    private Integer correctAnswersCount;
     private String text;
-    @NotNull(message = "duration can't be null")
-
-    private BigInteger duration;
-    @NotNull(message = "Id can't be null")
-    private Float scorePoints;
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Id can't be null")
     private QuestionType type;
-
-
-
     private List<Media> medias;
-    @NotNull(message = "level is required")
     private Long level_id;
-    @NotNull(message = "subject is required")
     private Long subject_id;
 
 }

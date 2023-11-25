@@ -2,8 +2,8 @@ package bouzhar.quiz.demo;
 
 import bouzhar.quiz.demo.answer.Answer;
 import bouzhar.quiz.demo.answer.AnswerRepository;
-import bouzhar.quiz.demo.assignement.Assignement;
-import bouzhar.quiz.demo.assignement.AssignementRepository;
+import bouzhar.quiz.demo.assignment.Assignment;
+import bouzhar.quiz.demo.assignment.AssignmentRepository;
 import bouzhar.quiz.demo.level.Level;
 import bouzhar.quiz.demo.level.LevelRepository;
 import bouzhar.quiz.demo.question.QuestionRepository;
@@ -15,7 +15,6 @@ import bouzhar.quiz.demo.teacher.Teacher;
 import bouzhar.quiz.demo.teacher.TeacherRepository;
 import bouzhar.quiz.demo.test.Test;
 import bouzhar.quiz.demo.test.TestRepository;
-import bouzhar.quiz.demo.validation.ValidationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +30,7 @@ public class InitialConfig {
     CommandLineRunner CommandLineRunner(
             AnswerRepository answerRepository,
             QuestionRepository questionRepository,
-            AssignementRepository assignementRepository,
+            AssignmentRepository assignmentRepository,
             LevelRepository levelRepository,
             SubjectRepository subjectRepository,
             StudentRepository studentRepository,
@@ -55,7 +54,7 @@ public class InitialConfig {
             student.setLastName("bouzhar");
             student.setEmail("abd@gmail.com");
             student.setAdress("sebt gzoula");
-            student.setRegestrationDate(LocalDate.now());
+            student.setRegistrationDate(LocalDate.now());
             studentRepository.saveAll(List.of(student));
             /******/
             Level level1 = new Level(
@@ -76,7 +75,7 @@ public class InitialConfig {
             teacher.setEmail("abd@gmail.com");
             teacher.setAdress("sebt gzoula");
             teacher.setSpeciality("math");
-            teacher.setRegestrationDate(LocalDate.now());
+            teacher.setRegistrationDate(LocalDate.now());
 
             teacherRepository.saveAll(List.of(teacher));
             /******/
@@ -92,18 +91,18 @@ public class InitialConfig {
 
             testRepository.saveAll(List.of(test));
             /*****/
-            Assignement assignement = new Assignement();
-            assignement.setChance(1);
-            assignement.setResult(false);
-            assignement.setObtainedScore(20F);
-            assignement.setStartDate(
+            Assignment assignment = new Assignment();
+            assignment.setChance(1);
+            assignment.setResult(false);
+            assignment.setObtainedScore(20F);
+            assignment.setStartDate(
                     LocalDateTime.now()
             );
-            assignement.setEndDate(
+            assignment.setEndDate(
                     LocalDateTime.now().minusDays(1)
             );
 
-            assignementRepository.saveAll(List.of(assignement));
+            assignmentRepository.saveAll(List.of(assignment));
         };
     }
 

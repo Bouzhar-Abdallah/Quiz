@@ -20,29 +20,40 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+    /*
+    *
+    * Methods
+    *
+    * */
+
+    // Add a question
+    @PostMapping(path = "")
+    @ResponseStatus(HttpStatus.CREATED)
+    public QuestionResDto addQuestion(@RequestBody @Valid QuestionReqDto questionReqDto) {
+        return questionService.addQuestion(questionReqDto);
+    }
+    // Get a question by id
+    @GetMapping(path = "{questionId}")
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionResDto getQuestion(@PathVariable Long questionId) {
+        return questionService.getQuestion(questionId);
+    }
+    // Get all questions
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<QuestionResDto> getQuestions() {
         return questionService.getQuestions();
     }
-
-    @GetMapping(path = "{questionId}")
-    public ResponseEntity<?> getQuestionBiId(@PathVariable Long questionId) {
-        return questionService.findById(questionId);
-    }
-
-    @PostMapping(path = "")
-    public ResponseEntity<?> addQuestion(@RequestBody @Valid QuestionReqDto questionReqDto) {
-        return questionService.addQuestion(questionReqDto);
-        //return new ResponseEntity<>(questionService.addQuestion(questionReqDto), HttpStatus.CREATED);
-    }
-
+    // Update a question
     @PutMapping
-    public ResponseEntity<QuestionResDto> updateQuestion(@RequestBody @Valid QuestionReqDto questionReqDto) {
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionResDto updateQuestion(@RequestBody @Valid QuestionReqDto questionReqDto) {
         return questionService.updateQuestion(questionReqDto.getId(), questionReqDto);
     }
-
+    // Delete a question
     @DeleteMapping(path = "{questionId}")
-    public ResponseEntity<QuestionResDto> deleteQuestion(@PathVariable("questionId") Long questionId) {
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionResDto deleteQuestion(@PathVariable("questionId") Long questionId) {
         return questionService.deleteQuestion(questionId);
     }
 

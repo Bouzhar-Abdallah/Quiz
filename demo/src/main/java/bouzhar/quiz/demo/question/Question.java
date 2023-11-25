@@ -19,23 +19,31 @@ import java.util.List;
 @NoArgsConstructor
 @RequiredArgsConstructor
 
-public class Question implements Serializable{
+public class Question implements Serializable {
 
 
     @Id
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NonNull private Integer answersCount;
-    @NonNull private Integer correctAnsqersCount;
-    @NonNull private String text;
-    @NonNull private Float scorePoints;
-    @Enumerated(EnumType.STRING)
-    @NonNull private QuestionType type;
+    @NonNull
+    private Integer answersCount;
+    @NonNull
+    private Integer correctAnswersCount;
+    @NonNull
+    private String text;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @NonNull
+    @Transient
+    private Float scorePoints;
+    @Enumerated(EnumType.STRING)
+    @NonNull
+    private QuestionType type;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Validation> validations;
-    @OneToMany(mappedBy = "question",fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Media> medias;
 
     @ManyToOne()
@@ -47,10 +55,19 @@ public class Question implements Serializable{
     @JoinColumn(name = "subject_id")
     private Subject subject;
     //@OneToMany(mappedBy = "question",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @OneToOne(mappedBy = "question",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Temporization temporization;
 
     public void addValidation(Validation validation) {
         validations.add(validation);
+    }
+
+    public @NonNull Float getScorePoints() {
+        if (validations == null || validations.isEmpty()) {
+            return 0F;
+        } else {
+            return scorePoints = validations.stream().map(Validation::getScore).reduce(0F, Float::sum);
+        }
+
     }
 }

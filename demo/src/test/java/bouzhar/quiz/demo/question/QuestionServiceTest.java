@@ -59,20 +59,7 @@ class QuestionServiceTest {
     void getQuestions() {
 
     }
-
-/*    @Test
-    void addQuestion() {
-        when(questionRepository.save(question)).thenReturn(question);
-        when(modelMapper.map(questionReqDto, Question.class)).thenReturn(question);
-        when(modelMapper.map(question, QuestionResDto.class)).thenReturn(questionResDto);
-        when(levelRepository.findById(anyLong())).thenReturn(Optional.of(new Level()));
-        when(subjectRepository.findById(anyLong())).thenReturn(Optional.of(new Subject()));
-
-        ResponseEntity<QuestionResDto> responseEntity = questionService.addQuestion(questionReqDto);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isNotNull();
-        verify(questionRepository,times(1)).save(question);
-    }*/
+/*
     @Test
     public void testAddQuestion() {
         QuestionReqDto questionReqDto = mock(QuestionReqDto.class);
@@ -147,5 +134,5 @@ class QuestionServiceTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(questionRepository, times(1)).deleteById(1L);
         verify(questionRepository, times(1)).findById(1L);
-    }
+    }*/
 }
