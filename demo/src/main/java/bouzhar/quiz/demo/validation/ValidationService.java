@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ValidationService {
+public class ValidationService implements ValidationServiceSpecification {
     private final ValidationRepository validationRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -31,23 +31,17 @@ public class ValidationService {
         this.modelMapper = modelMapper;
     }
 
-    public List<?> getValidations() {
-        return validationRepository.findAll();
-    }
-    public ResponseEntity<ValidationResDto> deleteValidation(Long questionId,Long answerId){
-        ValidationId validationId = new ValidationId(questionId,answerId);
-        Validation validation = validationRepository.findById(validationId).orElseThrow(()-> new ResourceNotFoundException("this relation doesn't exist"));
-        /*boolean exists = validationRepository.existsById(validationId);
-        if(!exists){
-            throw new ResourceNotFoundException("this relation doesn't exist does not exists");
-        }*/
-        validationRepository.deleteById(validationId);
-        return ResponseEntity.ok(modelMapper.map(validation, ValidationResDto.class));
-    }
+    /*
+     *
+     * Methods
+     *
+     * */
 
-    public ResponseEntity<?> addValidation(ValidationReqDto validationDto) {
-        Question question = questionRepository.findById(validationDto.getQuestion_id()).orElseThrow(()-> new ResourceNotFoundException("question with id: "+validationDto.getQuestion_id()+" not found"));
-        Answer answer = answerRepository.findById(validationDto.getAnswer_id()).orElseThrow(()-> new ResourceNotFoundException("answer with id: "+validationDto.getAnswer_id()+" not found"));
+    // add validation
+    @Override
+    public ValidationResDto addValidation(ValidationReqDto validationDto) {
+        Question question = questionRepository.findById(validationDto.getQuestion_id()).orElseThrow(() -> new ResourceNotFoundException("question with id: " + validationDto.getQuestion_id() + " not found"));
+        Answer answer = answerRepository.findById(validationDto.getAnswer_id()).orElseThrow(() -> new ResourceNotFoundException("answer with id: " + validationDto.getAnswer_id() + " not found"));
 
         Validation validation = new Validation();
         validation.setValidationId(new ValidationId(validationDto.getQuestion_id(), validationDto.getAnswer_id()));
@@ -55,7 +49,25 @@ public class ValidationService {
         validation.setAnswer(answer);
         validation.setIsCorrect(validationDto.getIsCorrect());
         validation.setScore(validationDto.getScore());
-        return ResponseEntity.ok(modelMapper.map(validationRepository.save(validation), ValidationResDto.class));
+        return modelMapper.map(validationRepository.save(validation), ValidationResDto.class);
     }
+
+    // get all validations
+    @Override
+    public List<ValidationResDto> getValidations() {
+        return validationRepository.findAll().stream()
+                .map(Validation -> modelMapper.map(Validation, ValidationResDto.class))
+                .toList();
+    }
+
+    // delete validation
+    @Override
+    public ValidationResDto deleteValidation(Long questionId, Long answerId) {
+        ValidationId validationId = new ValidationId(questionId, answerId);
+        Validation validation = validationRepository.findById(validationId).orElseThrow(() -> new ResourceNotFoundException("this relation doesn't exist"));
+        validationRepository.deleteById(validationId);
+        return modelMapper.map(validation, ValidationResDto.class);
+    }
+
 
 }

@@ -17,11 +17,7 @@ public class Validation {
     @EmbeddedId
     @JsonIgnore
     private ValidationId validationId;
-    /*
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-        */
+
     @ManyToOne()
     @MapsId("questionId")
     @JoinColumn(name = "question_id")
@@ -33,7 +29,7 @@ public class Validation {
     @JoinColumn(name = "answer_id")
     private Answer answer;
 
-    @NotNull
+    @NotNull(message = "isCorrect must not be null")
     @Column(nullable = false)
     private Boolean isCorrect;
 

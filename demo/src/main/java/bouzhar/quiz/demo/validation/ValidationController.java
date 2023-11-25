@@ -22,21 +22,33 @@ public class ValidationController {
         this.validationService = validationService;
     }
 
+    /*
+     *
+     * Methods
+     *
+     * */
+
+    // add validation
+    @ResponseStatus(HttpStatus.CREATED)
     @GetMapping(path = "getValidations")
-    public ResponseEntity<List<?>> getValidations() {
-        return new ResponseEntity<>(validationService.getValidations(), HttpStatus.OK);
+    public List<ValidationResDto> getValidations() {
+        return validationService.getValidations();
     }
 
+    // get validation by id
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(path = "{questionId}/{answerId}")
-    public ResponseEntity<ValidationResDto> deleteValidation(
+    public ValidationResDto deleteValidation(
             @PathVariable("questionId") Long questionId,
             @PathVariable("answerId") Long answerId) {
         return validationService.deleteValidation(questionId, answerId);
     }
 
+    // delete validation
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping
-    public ResponseEntity<?> addValidation(@RequestBody @Valid ValidationReqDto validationDto) {
+    public ValidationResDto addValidation(@RequestBody @Valid ValidationReqDto validationDto) {
         return validationService.addValidation(validationDto);
     }
-    
+
 }
