@@ -3,12 +3,15 @@ package bouzhar.quiz.demo.level;
 import bouzhar.quiz.demo.question.Question;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Table
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -20,15 +23,24 @@ public class Level {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(unique = true, nullable = false)
-    @NonNull private String description;
-    @Column(nullable = false)
-    @NonNull private Float maxPoints;
-    @Column(nullable = false)
-    @NonNull private Float minPoints;
+    @NonNull
+    @NotBlank(message = "Level description is mandatory")
+    private String description;
 
+    @Column(nullable = false)
+    @NonNull
+    @NotNull(message = "maxPoints can't be null")
+    @Min(value = 0,message = "maxPoints can't be 0")
+    private Float maxPoints;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "level",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @Column(nullable = false)
+    @NonNull
+    @NotNull(message = "minPoints can't be null")
+    @Min(value = 0,message = "minPoints can't be 0")
+    private Float minPoints;
+
+    @OneToMany(mappedBy = "level",fetch = FetchType.LAZY)
     private List<Question> questions;
 }
