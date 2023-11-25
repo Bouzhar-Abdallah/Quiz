@@ -57,17 +57,17 @@ public class QuestionService implements QuestionServiceSpecification {
 
         return modelMapper.map(savedQuestion, QuestionResDto.class);
     }
-    // Get all questions
-    @Override
-    public List<QuestionResDto> getQuestions() {
-        List<Question> questions = questionRepository.findAll();
-        return Arrays.asList(modelMapper.map(questions, QuestionResDto[].class));
-    }
     // Get a question by id
     @Override
     public QuestionResDto getQuestion(Long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow(() -> new ResourceNotFoundException("question not found"));
         return modelMapper.map(question, QuestionResDto.class);
+    }
+    // Get all questions
+    @Override
+    public List<QuestionResDto> getQuestions() {
+        List<Question> questions = questionRepository.findAll();
+        return Arrays.asList(modelMapper.map(questions, QuestionResDto[].class));
     }
     // Update a question
     @Override
