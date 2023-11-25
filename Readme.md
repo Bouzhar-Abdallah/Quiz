@@ -69,12 +69,12 @@
 ### Assignment
 | endpoint                               | method   | payload                                                                                                                    | description                          |
 |----------------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| /api/v2/assignement                    | `POST`   | `{ startDate: date, endDate: date, chance: int, result: bolean, obtainedScore: reel, test_id: int, student_id: int }`      | create a assignement                 |
-| /api/v2/assignement                    | `PUT`    | `{ startDate: date, endDate: date, chance: int, result: bolean, obtainedScore: reel, test_id: int, student_id: int }`      | edit a assignement                   |
-| /api/v2/assignement                    | `GET`    | `-`                                                                                                                        | get all assignements                 |
-| /api/v2/assignement/{id}               | `GET`    | `-`                                                                                                                        | find assignement by id               |
-| /api/v2/assignement/{id}               | `DELETE` | `-`                                                                                                                        | delete assignement                   |
-| /api/v2/assignement/addAssignementList | `POST`   | `{ startDate: date, endDate: date, chance: int, result: bolean, obtainedScore: reel, test_id: int, Array{student_id:int}}` | add assignements for a students list |
+| /api/v2/assignment                    | `POST`   | `{ startDate: date, endDate: date, chance: int, result: bolean, obtainedScore: reel, test_id: int, student_id: int }`      | create a assignment                 |
+| /api/v2/assignment                    | `PUT`    | `{ startDate: date, endDate: date, chance: int, result: bolean, obtainedScore: reel, test_id: int, student_id: int }`      | edit a assignment                   |
+| /api/v2/assignment                    | `GET`    | `-`                                                                                                                        | get all assignements                 |
+| /api/v2/assignment/{id}               | `GET`    | `-`                                                                                                                        | find assignment by id               |
+| /api/v2/assignment/{id}               | `DELETE` | `-`                                                                                                                        | delete assignment                   |
+| /api/v2/assignment/addAssignementList | `POST`   | `{ startDate: date, endDate: date, chance: int, result: bolean, obtainedScore: reel, test_id: int, Array{student_id:int}}` | add assignements for a students list |
 
 ### Validation
 | endpoint                                    | method   | payload                                                                 | description         |
