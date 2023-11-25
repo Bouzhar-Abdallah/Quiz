@@ -20,13 +20,17 @@ public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false)
+
     @NotNull
+    @Column(unique = true, nullable = false)
     @NonNull private String name;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     private Subject parent;
-    @JsonIgnore
+
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+    private List<Subject> children;
+
     @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
-    private List<Question> questionList;
+    private List<Question> questions;
 }

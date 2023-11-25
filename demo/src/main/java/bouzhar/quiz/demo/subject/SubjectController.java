@@ -1,10 +1,12 @@
 package bouzhar.quiz.demo.subject;
 
-import bouzhar.quiz.demo.exception.ValidationException;
+import bouzhar.quiz.demo.exception.CustomValidationException;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
+import bouzhar.quiz.demo.subject.dto.SubjectDto;
+import bouzhar.quiz.demo.subject.dto.SubjectReqDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,33 +21,49 @@ public class SubjectController {
         this.subjectService = subjectService;
     }
 
-    @GetMapping
-    public List<Subject> getSubjects() {
-        return subjectService.getSubjects();
+    /*
+    *
+    * Methods
+    *
+    * */
+
+    // Add new subject
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public SubjectDto addSubject(@RequestBody @Valid SubjectReqDto subjectReqDto) throws CustomValidationException {
+        return subjectService.addSubject(subjectReqDto);
     }
 
+    // Get subject by id
     @GetMapping(path = "{subjectId}")
-    public ResponseEntity<?> getSubject(@PathVariable("subjectId") Long subjectId) {
+    @ResponseStatus(HttpStatus.OK)
+    public SubjectDto getSubject(@PathVariable("subjectId") Long subjectId) {
         return subjectService.getSubject(subjectId);
     }
-
-    @GetMapping(path = "{subjectId}/questions")
-    public ResponseEntity<List<QuestionResDto>> getSubjectQuestions(@PathVariable("subjectId") Long subjectId) {
-        return subjectService.getSubjectQuestions(subjectId);
+    // Get all subjects
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<SubjectDto> getSubjects() {
+        return subjectService.getSubjects();
     }
-
-    @PostMapping
-    public ResponseEntity<SubjectDto> addSubject(@RequestBody @Valid SubjectDto subjectDto) throws ValidationException {
-        return subjectService.addSubject(subjectDto);
-    }
-
+    // Update subject
     @PutMapping
-    public ResponseEntity<SubjectDto> updateSubject(@RequestBody @Valid SubjectDto subjectDto) {
-        return subjectService.updateSubject(subjectDto);
+    @ResponseStatus(HttpStatus.OK)
+    public SubjectDto updateSubject(@RequestBody @Valid SubjectReqDto subjectReqDto) {
+        return subjectService.updateSubject(subjectReqDto);
     }
 
+    // Delete subject
     @DeleteMapping(path = "{subjectId}")
-    public ResponseEntity<String> deleteSubject(@PathVariable("subjectId") Long subjectId) {
+    @ResponseStatus(HttpStatus.OK)
+    public SubjectDto deleteSubject(@PathVariable("subjectId") Long subjectId) {
         return subjectService.deleteSubject(subjectId);
+    }
+
+    // Get subject questions
+    @GetMapping(path = "{subjectId}/questions")
+    @ResponseStatus(HttpStatus.OK)
+    public List<QuestionResDto> getSubjectQuestions(@PathVariable("subjectId") Long subjectId) {
+        return subjectService.getSubjectQuestions(subjectId);
     }
 }
