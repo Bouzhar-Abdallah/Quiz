@@ -1,8 +1,11 @@
 package bouzhar.quiz.demo.answer;
 
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
+import bouzhar.quiz.demo.answer.dto.AnswerSimpleDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,28 +20,44 @@ public class AnswerController {
     public AnswerController(AnswerServiceI answerService) {
         this.answerService = answerService;
     }
+
     /*
     *
     * Methods
     *
     * */
-    @GetMapping()
-    public ResponseEntity<List<AnswerDto>> getAnswers(){return answerService.getAnswers();}
+
+    // add new answer
     @PostMapping()
-    public ResponseEntity<AnswerDto> addAnswer(@RequestBody @Valid AnswerDto answerDto){
-        return answerService.addAnswer(answerDto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public AnswerSimpleDto addAnswer(@RequestBody @Valid AnswerSimpleDto answerSimpleDto){
+        return answerService.addAnswer(answerSimpleDto);
     }
-    @PutMapping
-    public ResponseEntity<AnswerDto> updateAnswer(@RequestBody @Valid AnswerDto answerDto){
-        return answerService.updateAnswer(answerDto);
-    }
-    @DeleteMapping(path = "{answerId}")
-    public ResponseEntity<String> deleteAnswer(@PathVariable("answerId") Long answerId){
-        return answerService.deleteAnswer(answerId);
-    }
+
+    // get answer by id
     @GetMapping(path = "{answerId}")
-    public ResponseEntity<AnswerDto> getAnswer(@PathVariable("answerId") Long answerId){
+    @ResponseStatus(HttpStatus.OK)
+    public AnswerResDto getAnswer(@PathVariable("answerId") Long answerId){
         return answerService.getAnswer(answerId);
+    }
+
+    // get all answers
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<AnswerResDto> getAnswers(){return answerService.getAnswers();}
+
+    // update answer
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public AnswerResDto updateAnswer(@RequestBody @Valid AnswerSimpleDto answerSimpleDto){
+        return answerService.updateAnswer(answerSimpleDto);
+    }
+
+    // delete answer
+    @DeleteMapping(path = "{answerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public AnswerResDto deleteAnswer(@PathVariable("answerId") Long answerId){
+        return answerService.deleteAnswer(answerId);
     }
 
 }

@@ -3,17 +3,20 @@ package bouzhar.quiz.demo.answer;
 import bouzhar.quiz.demo.validation.Validation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
 
 @Entity
-@Table
 
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Answer {
 
     @Id
@@ -22,9 +25,16 @@ public class Answer {
     )
     private long id;
     @Column(nullable = false, unique = true)
-    @NonNull private String answer;
+    @NonNull
+    @NotBlank(message = "Answer cannot be empty")
+    private String answer;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "answer",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "answer",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     private List<Validation> validations;
+
+    @Transient
+    private Integer uses;
+    public Integer getUses() {
+        return validations != null ? validations.size() : 0;
+    }
 }

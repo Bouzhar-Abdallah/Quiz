@@ -1,25 +1,17 @@
 package bouzhar.quiz.demo.answer;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
+import bouzhar.quiz.demo.answer.dto.AnswerSimpleDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface AnswerServiceI {
-    /*
-     *
-     * Methods
-     *
-     * */
-    ResponseEntity<List<AnswerDto>> getAnswers();
-
+    AnswerSimpleDto addAnswer(AnswerSimpleDto answerSimpleDto);
+    AnswerResDto getAnswer(Long answerId);
+    List<AnswerResDto> getAnswers();
+    AnswerResDto updateAnswer(AnswerSimpleDto answerSimpleDto);
+    AnswerResDto deleteAnswer(Long answerId);
     boolean existsAnswerByAnswer(String answer);
 
-    ResponseEntity<AnswerDto> addAnswer(AnswerDto answerDto);
-
-
-    ResponseEntity<AnswerDto> updateAnswer(AnswerDto answerDto);
-
-    ResponseEntity<String> deleteAnswer(Long answerId);
-
-    ResponseEntity<AnswerDto> getAnswer(Long answerId);
 }

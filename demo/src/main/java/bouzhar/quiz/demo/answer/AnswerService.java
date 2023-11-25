@@ -1,5 +1,7 @@
 package bouzhar.quiz.demo.answer;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
+import bouzhar.quiz.demo.answer.dto.AnswerSimpleDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,58 +20,75 @@ public class AnswerService implements AnswerServiceI {
         this.answerRepository = answerRepository;
         this.modelMapper = modelMapper;
     }
+
     /*
      *
      * Methods
      *
      * */
+
+    // create answer
     @Override
-    public ResponseEntity<List<AnswerDto>> getAnswers(){
-        return ResponseEntity.ok(answerRepository.findAll().stream()
-                .map(answer -> modelMapper.map(answer,AnswerDto.class))
-                .toList()
-        );
+    public AnswerSimpleDto addAnswer(AnswerSimpleDto answerSimpleDto) {
+        if (existsAnswerByAnswer(answerSimpleDto.getAnswer())) {
+            throw new IllegalStateException("Answer with the same text already exists");
+        }
+        Answer createdAnswer = answerRepository.save(modelMapper.map(answerSimpleDto,Answer.class));
+        return modelMapper.map(createdAnswer, AnswerSimpleDto.class);
     }
+
+    // get answer by id
+    @Override
+    public AnswerResDto getAnswer(Long answerId) {
+        Answer answer = answerRepository.findById(answerId).orElseThrow(()-> new ResourceNotFoundException(
+                "answer with id: "+answerId+" does not exist"
+        ));
+        return modelMapper.map(answer, AnswerResDto.class);
+    }
+
+    // get all answers
+    @Override
+    public List<AnswerResDto> getAnswers(){
+        return answerRepository.findAll().stream()
+                .map(answer -> modelMapper.map(answer, AnswerResDto.class))
+                .toList();
+    }
+
+    // update answer
+    @Override
+    public AnswerResDto updateAnswer(AnswerSimpleDto answerSimpleDto) {
+        Answer existingAnswer = answerRepository.findById(answerSimpleDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "answer with id: "+ answerSimpleDto.getId()+" does not exist"
+                ));
+        existingAnswer.setAnswer(answerSimpleDto.getAnswer());
+        Answer updatedAnswer = answerRepository.save(existingAnswer);
+        return modelMapper.map(updatedAnswer, AnswerResDto.class);
+    }
+
+    // delete answer
+    @Override
+    public AnswerResDto deleteAnswer(Long answerId) {
+        Answer existingAnswer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "answer with id: "+ answerId+" does not exist"
+                ));
+        answerRepository.deleteById(answerId);
+        return modelMapper.map(existingAnswer,AnswerResDto.class);
+    }
+
+    /*
+    *
+    * helper methods
+    *
+    *  */
+
+    // check if answer exists with same text
     @Override
     public boolean existsAnswerByAnswer(String answer) {
         return answerRepository.existsByAnswer(answer);
     }
-    @Override
-    public ResponseEntity<AnswerDto> addAnswer(AnswerDto answerDto) {
-        if (existsAnswerByAnswer(answerDto.getAnswer())) {
-            throw new IllegalStateException("Answer with the same text already exists");
-        }
-        Answer createdAnswer = answerRepository.save(modelMapper.map(answerDto,Answer.class));
-        return new ResponseEntity<>(modelMapper.map(createdAnswer,AnswerDto.class), HttpStatus.CREATED);
-    }
 
-    @Override
-    public ResponseEntity<AnswerDto> updateAnswer(AnswerDto answerDto) {
-        Answer existingAnswer = answerRepository.findById(answerDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "answer with id: "+answerDto.getId()+" does not exist"
-                ));
-        existingAnswer.setAnswer(answerDto.getAnswer());
-        Answer updatedAnswer = answerRepository.save(existingAnswer);
-        return new ResponseEntity<>(modelMapper.map(updatedAnswer,AnswerDto.class), HttpStatus.OK);
-    }
 
-    @Override
-    public ResponseEntity<String> deleteAnswer(Long answerId) {
-        boolean exists = answerRepository.existsById(answerId);
-        if(!exists){
-            throw new ResourceNotFoundException(
-                    "answer with id: "+answerId+" does not exist"
-            );
-        }
-        answerRepository.deleteById(answerId);
-        return new ResponseEntity<>("Answer with id: "+answerId+" deleted succesefully",HttpStatus.OK);
-    }
-    @Override
-    public ResponseEntity<AnswerDto> getAnswer(Long answerId) {
-        Answer answer = answerRepository.findById(answerId).orElseThrow(()-> new ResourceNotFoundException(
-                "answer with id: "+answerId+" does not exist"
-        ));
-        return ResponseEntity.ok(modelMapper.map(answer,AnswerDto.class));
-    }
+
 }
