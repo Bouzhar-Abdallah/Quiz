@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.assignment;
 
+import bouzhar.quiz.demo.response.Response;
 import bouzhar.quiz.demo.student.Student;
 import bouzhar.quiz.demo.test.Test;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,4 +39,6 @@ public class Assignment {
     @JoinColumn(name = "student_id")
     private Student student;
 
+    @OneToMany(mappedBy = "assignment")
+    private List<Response> responses;
 }
