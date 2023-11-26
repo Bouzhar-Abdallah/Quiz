@@ -4,6 +4,7 @@ import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.exception.CustomValidationException;
 import bouzhar.quiz.demo.level.dtos.LevelSimpleDto;
 import bouzhar.quiz.demo.level.dtos.LevelResDto;
+import bouzhar.quiz.demo.level.exceptions.LevelPointsException;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class LevelService implements LevelServiceInterface {
 
         if (existsLevelByText(levelSimpleDto.getDescription())) {
             throw new CustomValidationException("Level with the same text already exists");
+        }
+        if (levelSimpleDto.getMinPoints() > levelSimpleDto.getMaxPoints()) {
+            throw new LevelPointsException("Min points can't be greater than max points");
         }
 
         Level createdLevel = levelRepository.save(modelMapper.map(levelSimpleDto, Level.class));
@@ -82,11 +86,11 @@ public class LevelService implements LevelServiceInterface {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "The level with ID " + levelId + " does not exist"
                 ));
-        if (!existingLevel.getQuestions().isEmpty()) {
-            throw new IllegalStateException("The level with ID " + levelId + " has questions, deleting it would cause data lose");
-        } else {
-            levelRepository.delete(existingLevel);
-        }
+            if (!existingLevel.getQuestions().isEmpty()) {
+                throw new IllegalStateException("The level with ID " + levelId + " has questions, deleting it would cause data lose");
+            } else {
+                levelRepository.delete(existingLevel);
+            }
         return modelMapper.map(existingLevel, LevelSimpleDto.class);
     }
 

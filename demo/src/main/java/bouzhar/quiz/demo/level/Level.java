@@ -32,13 +32,13 @@ public class Level {
     @Column(nullable = false)
     @NonNull
     @NotNull(message = "maxPoints can't be null")
-    @Min(value = 0,message = "maxPoints can't be 0")
+    @Min(value = 0,message = "maxPoints can't be negative")
     private Float maxPoints;
 
     @Column(nullable = false)
     @NonNull
     @NotNull(message = "minPoints can't be null")
-    @Min(value = 0,message = "minPoints can't be 0")
+    @Min(value = 0,message = "minPoints can't be negative")
     private Float minPoints;
 
     @OneToMany(mappedBy = "level",fetch = FetchType.LAZY)
