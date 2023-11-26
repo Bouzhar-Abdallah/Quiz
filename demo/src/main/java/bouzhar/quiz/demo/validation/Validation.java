@@ -29,12 +29,15 @@ public class Validation {
     @JoinColumn(name = "answer_id")
     private Answer answer;
 
-    @NotNull(message = "isCorrect must not be null")
     @Column(nullable = false)
+    @Transient
     private Boolean isCorrect;
 
     @Column(nullable = false)
     @NotNull
     private Float score;
 
+    public Boolean getIsCorrect(){
+        return score > 0;
+    }
 }

@@ -13,12 +13,12 @@ import java.util.Objects;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidationId implements Serializable {
-    //@Column(name = "question_id")
+public class ValidationId {
+
     private Long questionId;
 
-    //@Column(name = "answer_id")
     private Long answerId;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

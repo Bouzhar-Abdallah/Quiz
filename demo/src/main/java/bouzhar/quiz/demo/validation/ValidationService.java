@@ -7,9 +7,11 @@ import bouzhar.quiz.demo.question.Question;
 import bouzhar.quiz.demo.question.QuestionRepository;
 import bouzhar.quiz.demo.validation.Dto.ValidationReqDto;
 import bouzhar.quiz.demo.validation.Dto.ValidationResDto;
+import bouzhar.quiz.demo.validation.exceptions.ValidationPointsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -47,8 +49,11 @@ public class ValidationService implements ValidationServiceSpecification {
         validation.setValidationId(new ValidationId(validationDto.getQuestion_id(), validationDto.getAnswer_id()));
         validation.setQuestion(question);
         validation.setAnswer(answer);
-        validation.setIsCorrect(validationDto.getIsCorrect());
         validation.setScore(validationDto.getScore());
+        float totalScore = question.getValidations().stream().map(Validation::getScore).reduce(0f, Float::sum) + validation.getScore();
+        if (question.getLevel().getMaxPoints() < totalScore){
+            throw new ValidationPointsException("the total score of the question is more than the max points of the level");
+        }
         return modelMapper.map(validationRepository.save(validation), ValidationResDto.class);
     }
 

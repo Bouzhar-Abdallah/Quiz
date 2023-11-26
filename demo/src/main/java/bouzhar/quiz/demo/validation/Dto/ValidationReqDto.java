@@ -16,7 +16,5 @@ public class ValidationReqDto {
     @NotNull
     private Long answer_id;
     @NotNull
-    private Boolean isCorrect;
-    @NotNull
     private Float score;
 }
