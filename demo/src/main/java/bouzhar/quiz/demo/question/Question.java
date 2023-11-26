@@ -26,9 +26,11 @@ public class Question implements Serializable {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NonNull
+
+    @Transient
     private Integer answersCount;
-    @NonNull
+
+    @Transient
     private Integer correctAnswersCount;
     @NonNull
     private String text;
@@ -68,6 +70,19 @@ public class Question implements Serializable {
         } else {
             return scorePoints = validations.stream().map(Validation::getScore).reduce(0F, Float::sum);
         }
-
+    }
+    public Integer getAnswersCount() {
+        if (validations == null || validations.isEmpty()) {
+            return 0;
+        } else {
+            return answersCount = validations.size();
+        }
+    }
+    public Integer getCorrectAnswersCount() {
+        if (validations == null || validations.isEmpty()) {
+            return 0;
+        } else {
+            return correctAnswersCount = (int)validations.stream().map(Validation::getIsCorrect).filter(Boolean::booleanValue).count();
+        }
     }
 }

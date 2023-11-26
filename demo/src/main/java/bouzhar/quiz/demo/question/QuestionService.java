@@ -66,8 +66,9 @@ public class QuestionService implements QuestionServiceSpecification {
     // Get all questions
     @Override
     public List<QuestionResDto> getQuestions() {
-        List<Question> questions = questionRepository.findAll();
-        return Arrays.asList(modelMapper.map(questions, QuestionResDto[].class));
+        return questionRepository.findAll().stream().
+                map(question -> modelMapper.map(question, QuestionResDto.class)).
+                toList();
     }
     // Update a question
     @Override
