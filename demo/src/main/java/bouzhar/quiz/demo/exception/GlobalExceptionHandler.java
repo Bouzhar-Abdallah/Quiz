@@ -1,5 +1,7 @@
 package bouzhar.quiz.demo.exception;
 
+import bouzhar.quiz.demo.level.exceptions.LevelPointsException;
+import bouzhar.quiz.demo.validation.exceptions.ValidationPointsException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -74,5 +76,18 @@ public class GlobalExceptionHandler {
         errors.put("constraint violation error", validationErrors);
         return errors;
     }
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ValidationPointsException.class)
+    public Map<String, String> handleValidationPointsException(ValidationPointsException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("cannot add validation", ex.getMessage());
+        return errorResponse;
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(LevelPointsException.class)
+    public Map<String, String> handleLevelPointsException(LevelPointsException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("cannot add level", ex.getMessage());
+        return errorResponse;
+    }
 }
