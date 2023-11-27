@@ -2,15 +2,15 @@
 
 ## Testing
 
-### Service Layer Test Coverage Goal
+###⭐ Service Layer Test Coverage Goal
 
 The goal of this project is to achieve 100% test coverage for the service layer using the Arrange-Act-Assert (AAA) pattern. This pattern is a best practice for structuring unit tests, emphasizing clarity and readability.
 
-### Why AAA Pattern?
+###⚡ Why AAA Pattern?
 
 The AAA pattern, consisting of Arrange, Act, and Assert phases, provides a clear structure for organizing unit tests. This structure enhances the readability and maintainability of tests by separating the setup, execution, and verification steps.
 
-### Objectives
+###🎯 Objectives
 
 1. **Coverage Target:** Achieve 100% test coverage for the service layer.
 

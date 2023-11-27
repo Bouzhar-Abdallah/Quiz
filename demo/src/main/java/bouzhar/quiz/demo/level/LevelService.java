@@ -69,6 +69,9 @@ public class LevelService implements LevelServiceInterface {
         Level existingLevel = levelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("The level with ID " + id + " does not exist"));
 
+        if (levelSimpleDto.getMinPoints() > levelSimpleDto.getMaxPoints()) {
+            throw new LevelPointsException("Min points can't be greater than max points");
+        }
         existingLevel.setDescription(levelSimpleDto.getDescription());
         existingLevel.setMaxPoints(levelSimpleDto.getMaxPoints());
         existingLevel.setMinPoints(levelSimpleDto.getMinPoints());
