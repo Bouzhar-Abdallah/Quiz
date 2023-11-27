@@ -49,52 +49,56 @@ class QuestionServiceTest {
     private QuestionResDto questionResDto;
     @Mock
     private ModelMapper modelMapper;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        questionService = new QuestionService(questionRepository,levelRepository, subjectRepository,mediaService ,modelMapper);
+        questionService = new QuestionService(questionRepository, levelRepository, subjectRepository, modelMapper);
     }
 
     @Test
     void getQuestions() {
-
+        when(questionRepository.findAll()).thenReturn(List.of(question));
+        when(modelMapper.map(question, QuestionResDto.class)).thenReturn(questionResDto);
+        List<QuestionResDto> responseEntity = questionService.getQuestions();
+        assertThat(responseEntity).isNotNull();
+        verify(questionRepository, times(1)).findAll();
     }
-/*
+
     @Test
     public void testAddQuestion() {
-        QuestionReqDto questionReqDto = mock(QuestionReqDto.class);
+
         questionReqDto.setLevel_id(1L);
         questionReqDto.setSubject_id(2L);
 
-
         Level level = new Level();
-        when(levelRepository.findById(any())).thenReturn(java.util.Optional.of(level));
-
         Subject subject = new Subject();
-        when(subjectRepository.findById(any())).thenReturn(java.util.Optional.of(subject));
-
         Question question = new Question();
-        when(modelMapper.map(questionReqDto, Question.class)).thenReturn(question);
+        QuestionResDto questionResDto = new QuestionResDto();
 
+        // Mocking repository behaviors
+        when(levelRepository.findById(any())).thenReturn(Optional.of(level));
+        when(subjectRepository.findById(any())).thenReturn(Optional.of(subject));
+        when(modelMapper.map(questionReqDto, Question.class)).thenReturn(question);
+        when(questionRepository.save(question)).thenReturn(question);
+        when(modelMapper.map(question, QuestionResDto.class)).thenReturn(questionResDto);
         Media media = new Media();
         when(questionReqDto.getMedias()).thenReturn(List.of(media));
 
-        when(questionRepository.save(any(Question.class))).thenReturn(question);
+        // Act
+        QuestionResDto result = questionService.addQuestion(questionReqDto);
 
+        // Assert
+        assertNotNull(result);
+        assertEquals(questionResDto, result);
 
-        //ResponseEntity<QuestionResDto> response = questionService.addQuestion(questionReqDto);
-        try {
-            ResponseEntity<QuestionResDto> response = questionService.addQuestion(questionReqDto);
-
-            assertNotNull(response);
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
-            e.printStackTrace(); // print the stack trace
-            fail("Exception thrown: " + e.getMessage());
-        }
-
+        // Verify repository interactions
+        verify(levelRepository, times(1)).findById(any());
+        verify(subjectRepository, times(1)).findById(any());
+        verify(questionRepository, times(1)).save(question);
 
     }
+
     @Test
     void updateQuestion() {
         QuestionReqDto questionReqDto = mock(QuestionReqDto.class);
@@ -111,8 +115,7 @@ class QuestionServiceTest {
         when(questionRepository.findById(anyLong())).thenReturn(Optional.of(question));
         when(modelMapper.map(questionReqDto, Question.class)).thenReturn(question);
         when(modelMapper.map(question, QuestionResDto.class)).thenReturn(questionResDto);
-        ResponseEntity<QuestionResDto> responseEntity = questionService.updateQuestion(1L, questionReqDto);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        QuestionResDto responseEntity = questionService.updateQuestion(1L, questionReqDto);
         verify(questionRepository, times(1)).save(question);
         verify(questionRepository, times(1)).findById(1L);
     }
@@ -121,18 +124,16 @@ class QuestionServiceTest {
     void findById() {
         when(questionRepository.findById(anyLong())).thenReturn(Optional.of(question));
         when(modelMapper.map(question, QuestionResDto.class)).thenReturn(questionResDto);
-        ResponseEntity<QuestionResDto> responseEntity = questionService.findById(1L);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isNotNull();
+        QuestionResDto responseEntity = questionService.getQuestion(1L);
+        assertThat(responseEntity).isNotNull();
         verify(questionRepository, times(1)).findById(1L);
     }
 
     @Test
     void deleteQuestion() {
         when(questionRepository.findById(anyLong())).thenReturn(Optional.of(question));
-        ResponseEntity<QuestionResDto> responseEntity = questionService.deleteQuestion(1L);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        QuestionResDto responseEntity = questionService.deleteQuestion(1L);
         verify(questionRepository, times(1)).deleteById(1L);
         verify(questionRepository, times(1)).findById(1L);
-    }*/
+    }
 }
