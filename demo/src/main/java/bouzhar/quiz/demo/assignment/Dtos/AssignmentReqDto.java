@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.assignment.Dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -9,13 +10,17 @@ import java.time.LocalDateTime;
 public class AssignmentReqDto {
     private Long id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime startDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime endDate;
 
     private Integer chance;
 
     private boolean result;
+
+    private String reason;
 
     private Float obtainedScore;
 

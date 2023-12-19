@@ -15,6 +15,8 @@ import bouzhar.quiz.demo.teacher.Teacher;
 import bouzhar.quiz.demo.teacher.TeacherRepository;
 import bouzhar.quiz.demo.test.Test;
 import bouzhar.quiz.demo.test.TestRepository;
+import bouzhar.quiz.demo.validation.ValidationRepository;
+import bouzhar.quiz.demo.validation.ValidationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +28,7 @@ import java.util.List;
 
 @Configuration
 public class InitialConfig {
-    @Bean
+    //@Bean
     CommandLineRunner CommandLineRunner(
             AnswerRepository answerRepository,
             QuestionRepository questionRepository,
@@ -110,4 +112,5 @@ public class InitialConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 }

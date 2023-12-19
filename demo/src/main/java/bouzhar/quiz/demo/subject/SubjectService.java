@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.subject;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.exception.CustomValidationException;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
@@ -9,6 +10,8 @@ import bouzhar.quiz.demo.subject.dto.SubjectSimpleDto;
 import jakarta.validation.ValidationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -115,6 +118,12 @@ public class SubjectService implements SubjectServiceI {
         return subject.getQuestions().stream()
                 .map(question -> modelMapper.map(question, QuestionResDto.class))
                 .toList();
+    }
+
+    @Override
+    public Page<SubjectDto> getPaginatedAnswers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return subjectRepository.findAll(pageRequest).map(subject -> modelMapper.map(subject, SubjectDto.class));
     }
 
     /*

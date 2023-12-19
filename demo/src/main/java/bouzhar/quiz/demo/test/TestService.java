@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.test;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.question.Question;
 import bouzhar.quiz.demo.question.QuestionRepository;
@@ -10,14 +11,18 @@ import bouzhar.quiz.demo.temporization.TemporizationId;
 import bouzhar.quiz.demo.temporization.TemporizationReqDto;
 import bouzhar.quiz.demo.test.Dtos.TestReqDto;
 import bouzhar.quiz.demo.test.Dtos.TestResDto;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TestService implements TestServiceSpecification {
 
     private final TestRepository testRepository;
@@ -25,13 +30,6 @@ public class TestService implements TestServiceSpecification {
     private final TeacherRepository teacherRepository;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public TestService(TestRepository testRepository, QuestionRepository questionRepository, TeacherRepository teacherRepository, ModelMapper modelMapper) {
-        this.testRepository = testRepository;
-        this.questionRepository = questionRepository;
-        this.teacherRepository = teacherRepository;
-        this.modelMapper = modelMapper;
-    }
 
     /*
      *
@@ -115,5 +113,11 @@ public class TestService implements TestServiceSpecification {
         testRepository.save(test);
         return
                 modelMapper.map(test, TestResDto.class);
+    }
+
+    @Override
+    public Page<TestResDto> getPaginatedAnswers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return testRepository.findAll(pageRequest).map(test -> modelMapper.map(test, TestResDto.class));
     }
 }

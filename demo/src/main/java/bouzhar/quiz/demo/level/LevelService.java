@@ -1,29 +1,29 @@
 package bouzhar.quiz.demo.level;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.exception.CustomValidationException;
 import bouzhar.quiz.demo.level.dtos.LevelSimpleDto;
 import bouzhar.quiz.demo.level.dtos.LevelResDto;
 import bouzhar.quiz.demo.level.exceptions.LevelPointsException;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
+@AllArgsConstructor
 public class LevelService implements LevelServiceInterface {
 
     private final LevelRepository levelRepository;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public LevelService(LevelRepository levelRepository, ModelMapper modelMapper) {
-        this.levelRepository = levelRepository;
-        this.modelMapper = modelMapper;
-    }
 
     /*
      *
@@ -116,4 +116,9 @@ public class LevelService implements LevelServiceInterface {
         return levelRepository.existsByDescription(description);
     }
 
+    @Override
+    public Page<LevelResDto> getPaginatedAnswers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return levelRepository.findAll(pageRequest).map(level -> modelMapper.map(level, LevelResDto.class));
+    }
 }

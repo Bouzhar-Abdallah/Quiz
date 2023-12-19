@@ -1,10 +1,13 @@
 package bouzhar.quiz.demo.level;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.level.dtos.LevelSimpleDto;
 import bouzhar.quiz.demo.level.dtos.LevelResDto;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
 @RequestMapping(path = "api/v2/level")
+@AllArgsConstructor
 public class LevelController {
     private final LevelService levelService;
 
-    @Autowired
-    public LevelController(LevelService levelService) {
-        this.levelService = levelService;
-    }
 
     /*
      *
@@ -68,5 +67,12 @@ public class LevelController {
     @ResponseStatus(HttpStatus.OK)
     public List<QuestionResDto> getLevelQuestions(@PathVariable("levelId") Long levelId) {
         return levelService.getLevelQuestions(levelId);
+    }
+
+    @GetMapping("/pages")
+    public Page<LevelResDto> getPaginatedAnswers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return levelService.getPaginatedAnswers(page, size);
     }
 }

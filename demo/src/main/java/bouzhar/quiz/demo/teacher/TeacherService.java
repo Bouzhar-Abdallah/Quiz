@@ -1,10 +1,14 @@
 package bouzhar.quiz.demo.teacher;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.teacher.Dto.TeacherDto;
 import bouzhar.quiz.demo.teacher.Dto.TeacherResDto;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +16,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TeacherService implements TeacherServiceSpecification {
     private final TeacherRepository teacherRepository;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public TeacherService(TeacherRepository teacherRepository, ModelMapper modelMapper) {
-        this.teacherRepository = teacherRepository;
-        this.modelMapper = modelMapper;
-    }
 
     /*
      *
@@ -76,5 +76,11 @@ public class TeacherService implements TeacherServiceSpecification {
         teacherRepository.deleteById(id);
         return
                 modelMapper.map(teacher, TeacherResDto.class);
+    }
+
+    @Override
+    public Page<TeacherResDto> getPaginatedAnswers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return teacherRepository.findAll(pageRequest).map(teacher -> modelMapper.map(teacher, TeacherResDto.class));
     }
 }

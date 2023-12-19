@@ -16,6 +16,7 @@ public class AssignmentSimpleDto {
     private Integer chance;
 
     private boolean result;
+    private String reason;
 
     private Float obtainedScore;
 

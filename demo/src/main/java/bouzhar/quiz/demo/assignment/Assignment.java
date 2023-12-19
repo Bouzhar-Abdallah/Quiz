@@ -3,6 +3,7 @@ package bouzhar.quiz.demo.assignment;
 import bouzhar.quiz.demo.response.Response;
 import bouzhar.quiz.demo.student.Student;
 import bouzhar.quiz.demo.test.Test;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class Assignment {
     private Long id;
 
     @NotNull(message = "start date must not be null")
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     private LocalDateTime startDate;
 
     @NotNull(message = "end date must not be null")
@@ -32,10 +34,10 @@ public class Assignment {
     private boolean result;
 
     private Float obtainedScore;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "test_id")
     private Test test;
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
     private Student student;
 

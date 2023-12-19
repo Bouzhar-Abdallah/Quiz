@@ -1,8 +1,10 @@
 package bouzhar.quiz.demo.student;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.student.dto.StudentDto;
 import bouzhar.quiz.demo.student.dto.StudentResDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +62,10 @@ public class StudentController {
         return studentService.deleteStudent(student_id);
     }
 
+    @GetMapping("/pages")
+    public Page<StudentResDto> getPaginatedAnswers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return studentService.getPaginatedAnswers(page, size);
+    }
 }

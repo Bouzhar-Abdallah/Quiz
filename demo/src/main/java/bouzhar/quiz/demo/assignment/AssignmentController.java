@@ -1,10 +1,13 @@
 package bouzhar.quiz.demo.assignment;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentListReqDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentReqDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentResDto;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +15,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v2/assignment")
+@AllArgsConstructor
 public class AssignmentController {
     private final AssignmentService assignmentService;
-
-    @Autowired
-    public AssignmentController(AssignmentService assignmentService) {
-        this.assignmentService = assignmentService;
-    }
 
     /*
      *
@@ -62,4 +61,10 @@ public class AssignmentController {
         return assignmentService.addAssignmentList(assignmentDto);
     }
 
+    @GetMapping("/pages")
+    public Page<AssignmentResDto> getPaginatedAssignments(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return assignmentService.getPaginatedAssignments(page, size);
+    }
 }

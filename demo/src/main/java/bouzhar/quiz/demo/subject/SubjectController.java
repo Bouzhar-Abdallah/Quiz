@@ -1,11 +1,13 @@
 package bouzhar.quiz.demo.subject;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.exception.CustomValidationException;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import bouzhar.quiz.demo.subject.dto.SubjectDto;
 import bouzhar.quiz.demo.subject.dto.SubjectReqDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,5 +67,11 @@ public class SubjectController {
     @ResponseStatus(HttpStatus.OK)
     public List<QuestionResDto> getSubjectQuestions(@PathVariable("subjectId") Long subjectId) {
         return subjectService.getSubjectQuestions(subjectId);
+    }
+    @GetMapping("/pages")
+    public Page<SubjectDto> getPaginatedAnswers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return subjectService.getPaginatedAnswers(page, size);
     }
 }

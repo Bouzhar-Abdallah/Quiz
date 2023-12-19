@@ -4,7 +4,9 @@ package bouzhar.quiz.demo.answer;
 import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.answer.dto.AnswerSimpleDto;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +15,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v2/answer")
+@AllArgsConstructor
 public class AnswerController {
     private final AnswerServiceI answerService;
-
-    @Autowired
-    public AnswerController(AnswerServiceI answerService) {
-        this.answerService = answerService;
-    }
 
     /*
     *
@@ -58,6 +56,13 @@ public class AnswerController {
     @ResponseStatus(HttpStatus.OK)
     public AnswerResDto deleteAnswer(@PathVariable("answerId") Long answerId){
         return answerService.deleteAnswer(answerId);
+    }
+
+    @GetMapping("/pages")
+    public Page<AnswerResDto> getPaginatedAnswers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return answerService.getPaginatedAnswers(page, size);
     }
 
 }

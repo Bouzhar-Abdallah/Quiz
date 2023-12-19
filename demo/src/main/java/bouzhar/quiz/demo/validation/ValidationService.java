@@ -10,6 +10,7 @@ import bouzhar.quiz.demo.validation.Dto.ValidationResDto;
 import bouzhar.quiz.demo.validation.exceptions.ValidationPointsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ValidationService implements ValidationServiceSpecification {
+
     private final ValidationRepository validationRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public ValidationService(ValidationRepository validationRepository, QuestionRepository questionRepository, AnswerRepository answerRepository, ModelMapper modelMapper) {
-        this.validationRepository = validationRepository;
-        this.questionRepository = questionRepository;
-        this.answerRepository = answerRepository;
-        this.modelMapper = modelMapper;
-    }
 
     /*
      *
@@ -42,8 +37,10 @@ public class ValidationService implements ValidationServiceSpecification {
     // add validation
     @Override
     public ValidationResDto addValidation(ValidationReqDto validationDto) {
-        Question question = questionRepository.findById(validationDto.getQuestion_id()).orElseThrow(() -> new ResourceNotFoundException("question with id: " + validationDto.getQuestion_id() + " not found"));
-        Answer answer = answerRepository.findById(validationDto.getAnswer_id()).orElseThrow(() -> new ResourceNotFoundException("answer with id: " + validationDto.getAnswer_id() + " not found"));
+        Question question = questionRepository.findById(validationDto.getQuestion_id()).orElseThrow(
+                () -> new ResourceNotFoundException("question with id: " + validationDto.getQuestion_id() + " not found"));
+        Answer answer = answerRepository.findById(validationDto.getAnswer_id()).orElseThrow(
+                () -> new ResourceNotFoundException("answer with id: " + validationDto.getAnswer_id() + " not found"));
 
         Validation validation = new Validation();
         validation.setValidationId(new ValidationId(validationDto.getQuestion_id(), validationDto.getAnswer_id()));

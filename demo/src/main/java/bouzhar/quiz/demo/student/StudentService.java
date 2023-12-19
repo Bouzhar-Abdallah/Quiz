@@ -1,11 +1,14 @@
 package bouzhar.quiz.demo.student;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.student.dto.StudentDto;
 import bouzhar.quiz.demo.student.dto.StudentResDto;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -73,4 +76,9 @@ public class StudentService implements StudentServiceSpecification {
         return deletedStudent;
     }
 
+    @Override
+    public Page<StudentResDto> getPaginatedAnswers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return studentRepository.findAll(pageRequest).map(student -> modelMapper.map(student, StudentResDto.class));
+    }
 }

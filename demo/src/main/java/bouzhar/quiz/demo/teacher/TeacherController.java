@@ -1,10 +1,13 @@
 package bouzhar.quiz.demo.teacher;
 
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.teacher.Dto.TeacherDto;
 import bouzhar.quiz.demo.teacher.Dto.TeacherResDto;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v2/teacher")
+@AllArgsConstructor
 public class TeacherController {
     private final TeacherService teacherService;
 
-    @Autowired
-    public TeacherController(TeacherService teacherService) {
-        this.teacherService = teacherService;
-    }
 
     /*
      *
@@ -54,5 +54,12 @@ public class TeacherController {
     @DeleteMapping(path = "{teacher_id}")
     public TeacherResDto deleteTeacher(@PathVariable Long teacher_id) {
         return teacherService.deleteTeacher(teacher_id);
+    }
+
+    @GetMapping("/pages")
+    public Page<TeacherResDto> getPaginatedAnswers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return teacherService.getPaginatedAnswers(page, size);
     }
 }

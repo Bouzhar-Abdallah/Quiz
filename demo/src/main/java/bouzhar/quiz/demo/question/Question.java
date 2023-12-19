@@ -32,6 +32,7 @@ public class Question implements Serializable {
 
     @Transient
     private Integer correctAnswersCount;
+
     @NonNull
     private String text;
 

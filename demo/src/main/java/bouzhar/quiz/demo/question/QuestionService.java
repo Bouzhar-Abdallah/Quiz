@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.question;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import bouzhar.quiz.demo.level.Level;
 import bouzhar.quiz.demo.level.LevelRepository;
@@ -10,28 +11,27 @@ import bouzhar.quiz.demo.question.dto.QuestionReqDto;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import bouzhar.quiz.demo.subject.Subject;
 import bouzhar.quiz.demo.subject.SubjectRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class QuestionService implements QuestionServiceSpecification {
     private final QuestionRepository questionRepository;
     private final LevelRepository levelRepository;
     private final SubjectRepository subjectRepository;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public QuestionService(QuestionRepository questionRepository, LevelRepository levelRepository, SubjectRepository subjectRepository, ModelMapper modelMapper) {
-        this.questionRepository = questionRepository;
-        this.levelRepository = levelRepository;
-        this.subjectRepository = subjectRepository;
-        this.modelMapper = modelMapper;
-    }
 
     /*
     *
@@ -100,4 +100,9 @@ public class QuestionService implements QuestionServiceSpecification {
         return modelMapper.map(question, QuestionResDto.class);
     }
 
+    @Override
+    public Page<QuestionResDto> getPaginatedAnswers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return questionRepository.findAll(pageRequest).map(question -> modelMapper.map(question, QuestionResDto.class));
+    }
 }

@@ -18,6 +18,8 @@ public class AssignmentListReqDto {
 
     private boolean result;
 
+    private String reason;
+
     private Float obtainedScore;
 
     @NotNull

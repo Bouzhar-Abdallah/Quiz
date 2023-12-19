@@ -3,6 +3,7 @@ package bouzhar.quiz.demo.subject;
 import bouzhar.quiz.demo.question.dto.QuestionResDto;
 import bouzhar.quiz.demo.subject.dto.SubjectDto;
 import bouzhar.quiz.demo.subject.dto.SubjectReqDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface SubjectServiceI {
      *
      * */
     boolean existsSubjectByName(String name);
+
+    Page<SubjectDto> getPaginatedAnswers(int page, int size);
 }

@@ -38,8 +38,7 @@ public class GlobalExceptionHandler {
     //handling persistence validation errors
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, Object> errors = new HashMap<>();
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> validationErrors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -48,8 +47,7 @@ public class GlobalExceptionHandler {
             validationErrors.put(fieldName, errorMessage);
         });
 
-        errors.put("validation error", validationErrors);
-        return errors;
+        return validationErrors;
     }
 
     //handling custom validation errors
@@ -57,7 +55,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomValidationException.class)
     public Map<String, String> handleCustomValidationExceptions(CustomValidationException ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
+        errorResponse.put("validation_error", ex.getMessage());
         return errorResponse;
     }
 

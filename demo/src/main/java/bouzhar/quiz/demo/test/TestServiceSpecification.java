@@ -4,6 +4,7 @@ package bouzhar.quiz.demo.test;
 import bouzhar.quiz.demo.temporization.TemporizationReqDto;
 import bouzhar.quiz.demo.test.Dtos.TestReqDto;
 import bouzhar.quiz.demo.test.Dtos.TestResDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface TestServiceSpecification {
     TestResDto updateTest(TestReqDto testResDto);
     TestResDto deleteTest(Long Id);
     TestResDto addQuestion(TemporizationReqDto temporizationReqDto);
+
+    Page<TestResDto> getPaginatedAnswers(int page, int size);
 }

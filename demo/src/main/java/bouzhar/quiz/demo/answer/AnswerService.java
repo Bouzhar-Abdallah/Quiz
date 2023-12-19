@@ -5,8 +5,8 @@ import bouzhar.quiz.demo.answer.dto.AnswerSimpleDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,6 +75,12 @@ public class AnswerService implements AnswerServiceI {
                 ));
         answerRepository.deleteById(answerId);
         return modelMapper.map(existingAnswer,AnswerResDto.class);
+    }
+
+    @Override
+    public Page<AnswerResDto> getPaginatedAnswers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return answerRepository.findAll(pageRequest).map(answer -> modelMapper.map(answer, AnswerResDto.class));
     }
 
     /*

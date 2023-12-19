@@ -1,13 +1,19 @@
 package bouzhar.quiz.demo.assignment;
 
+import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentListReqDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentReqDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentResDto;
 import bouzhar.quiz.demo.exception.ResourceNotFoundException;
+import bouzhar.quiz.demo.student.Student;
 import bouzhar.quiz.demo.student.StudentRepository;
+import bouzhar.quiz.demo.test.Test;
 import bouzhar.quiz.demo.test.TestRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class AssignmentService implements AssignmentServiceSpecification {
     private final AssignmentRepository assignmentRepository;
     private final TestRepository testRepository;
     private final StudentRepository studentRepository;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public AssignmentService(AssignmentRepository assignmentRepository, TestRepository testRepository, StudentRepository studentRepository, ModelMapper modelMapper) {
-        this.assignmentRepository = assignmentRepository;
-        this.testRepository = testRepository;
-        this.studentRepository = studentRepository;
-        this.modelMapper = modelMapper;
-    }
 
     /*
      *
@@ -73,19 +72,26 @@ public class AssignmentService implements AssignmentServiceSpecification {
     // update assignment
     @Override
     public AssignmentResDto updateAssignment(AssignmentReqDto assignmentDto) {
-        assignmentRepository.findById(assignmentDto.getId()).orElseThrow(
+        Assignment assignment = assignmentRepository.findById(assignmentDto.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("assignment with id " + assignmentDto.getId() + " not found")
         );
-        testRepository.findById(assignmentDto.getTest_id()).orElseThrow(
+        Test test = testRepository.findById(assignmentDto.getTest_id()).orElseThrow(
                 () -> new ResourceNotFoundException("test with id " + assignmentDto.getTest_id() + " not found")
         );
-        studentRepository.findById(assignmentDto.getStudent_id()).orElseThrow(
+        Student student = studentRepository.findById(assignmentDto.getStudent_id()).orElseThrow(
                 () -> new ResourceNotFoundException("student with id " + assignmentDto.getStudent_id() + " not found")
         );
+        assignment.setTest(test);
+        assignment.setStudent(student);
+        assignment.setChance(assignmentDto.getChance());
+        assignment.setEndDate(assignmentDto.getEndDate());
+        assignment.setStartDate(assignmentDto.getStartDate());
+        assignment.setObtainedScore(assignmentDto.getObtainedScore());
+        assignment.setResult(assignmentDto.isResult());
+        assignment.setReason(assignmentDto.getReason());
+
         return
-                modelMapper.map(
-                        assignmentRepository.save(modelMapper.map(assignmentDto, Assignment.class))
-                        , AssignmentResDto.class);
+                modelMapper.map(assignmentRepository.save(assignment), AssignmentResDto.class);
     }
 
     // delete assignment
@@ -120,5 +126,9 @@ public class AssignmentService implements AssignmentServiceSpecification {
         return assignmentResDtos;
     }
 
-
+    @Override
+    public Page<AssignmentResDto> getPaginatedAssignments(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return assignmentRepository.findAll(pageRequest).map(assignment -> modelMapper.map(assignment, AssignmentResDto.class));
+    }
 }
