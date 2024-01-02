@@ -8,9 +8,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -20,10 +20,11 @@ public class Assignment {
     private Long id;
 
     @NotNull(message = "start date must not be null")
-    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
 
     @NotNull(message = "end date must not be null")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
     private String reason;
@@ -35,7 +36,7 @@ public class Assignment {
 
     private Float obtainedScore;
     @ManyToOne()
-    @JoinColumn(name = "test_id")
+    
     private Test test;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
@@ -43,4 +44,12 @@ public class Assignment {
 
     @OneToMany(mappedBy = "assignment")
     private List<Response> responses;
+
+     public Integer getAnsweredQuestionsCount(){
+        return this.responses.stream()
+                .map(response -> response.getValidation().getQuestion())
+                .collect(Collectors.toSet())
+                .size();
+     }
+
 }

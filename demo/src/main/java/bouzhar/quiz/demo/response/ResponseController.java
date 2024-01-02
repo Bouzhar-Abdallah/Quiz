@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/v2/response")
 public class ResponseController {
@@ -19,5 +22,9 @@ public class ResponseController {
     @PostMapping
     public ResponseReqDto addResponse(@RequestBody ResponseReqDto responseReqDto){
         return responseService.create(responseReqDto);
+    }
+    @PostMapping(path = "all")
+    public void addManyResponse(@RequestBody List<ResponseReqDto> responses){
+        responses.forEach(responseService::create);
     }
 }

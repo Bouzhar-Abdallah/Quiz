@@ -13,7 +13,7 @@ import java.util.Objects;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidationId {
+public class ValidationId implements Serializable{
 
     private Long questionId;
 

@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 public class ResponseResDto {
-    private Long id;
+    //private Long id;
 
-    private AssignmentResDto assignment;
+    //private AssignmentResDto assignment;
 
     private ValidationResDto validation;
 }

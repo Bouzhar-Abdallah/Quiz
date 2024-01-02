@@ -11,6 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Temporization {
+    public Temporization(TemporizationId temporizationId, Integer duration) {
+        this.temporizationId = temporizationId;
+        this.duration = duration;
+    }
 
     @EmbeddedId
     @JsonIgnore

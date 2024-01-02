@@ -4,6 +4,7 @@ import bouzhar.quiz.demo.answer.dto.AnswerResDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentListReqDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentReqDto;
 import bouzhar.quiz.demo.assignment.Dtos.AssignmentResDto;
+import bouzhar.quiz.demo.assignment.Dtos.PassQuiz;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class AssignmentController {
 
     // get assignment by id
     @GetMapping(path = "{assignment_id}")
-    public AssignmentResDto getAssignment(@PathVariable Long assignment_id) {
+    public PassQuiz getAssignment(@PathVariable Long assignment_id) {
         return assignmentService.getAssignment(assignment_id);
     }
 
@@ -41,6 +42,12 @@ public class AssignmentController {
     @GetMapping(path = "getall")
     public List<AssignmentResDto> getAll() {
         return assignmentService.getAllAssignments();
+    }
+
+    // get all assignments
+    @GetMapping(path = "all/test/{test_id}")
+    public List<AssignmentResDto> getTestAllAssignments(@PathVariable Long test_id) {
+        return assignmentService.getTestAllAssignments(test_id);
     }
 
     // update assignment

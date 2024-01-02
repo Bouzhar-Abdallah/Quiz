@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -20,4 +21,17 @@ public class QuestionSimpleDto {
     private Float scorePoints;
     @Enumerated(EnumType.STRING)
     private QuestionType type;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionSimpleDto that = (QuestionSimpleDto) o;
+        return getId() == that.getId() && Objects.equals(getAnswersCount(), that.getAnswersCount()) && Objects.equals(getCorrectAnswersCount(), that.getCorrectAnswersCount()) && Objects.equals(getText(), that.getText()) && Objects.equals(getScorePoints(), that.getScorePoints()) && getType() == that.getType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getAnswersCount(), getCorrectAnswersCount(), getText(), getScorePoints(), getType());
+    }
 }

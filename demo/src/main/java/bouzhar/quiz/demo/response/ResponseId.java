@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Data
 @Embeddable
-public class ResponseId {
+public class ResponseId implements Serializable{
 
     private Long assignmentId;
     private Long questionId;

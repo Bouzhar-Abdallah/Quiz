@@ -1,19 +1,14 @@
 package bouzhar.quiz.demo.test.Dtos;
 
-import bouzhar.quiz.demo.assignment.Dtos.AssignmentResDto;
-import bouzhar.quiz.demo.assignment.Dtos.AssignmentSimpleDto;
-import bouzhar.quiz.demo.teacher.Dto.TeacherDto;
-import bouzhar.quiz.demo.temporization.Temporization;
 import bouzhar.quiz.demo.temporization.TemporizationResDto;
-import bouzhar.quiz.demo.validation.Dto.ValidationResDto;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-
-public class TestResDto {
+public class TestResSimpleWithQuestionsDto {
     private Long id;
+
     private String title;
     private Integer duration;
     private Float successScore;
@@ -22,7 +17,5 @@ public class TestResDto {
     private Integer maxAttempts;
     private String remarks;
     private String instructions;
-    private TeacherDto teacher;
-    private List<AssignmentSimpleDto> assignments;
-
+    private List<TemporizationResDto> temporizations;
 }
