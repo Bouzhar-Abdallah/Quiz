@@ -19,5 +19,5 @@ public class AssignmentSimpleDto {
     private boolean result;
     private String reason;
     private Float obtainedScore;
-
+    private boolean isPassed;
 }

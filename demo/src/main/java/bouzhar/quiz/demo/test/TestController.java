@@ -29,7 +29,7 @@ public class TestController {
     // Add new test
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public TestResDto addNewTest(@RequestBody @Valid TestReqDto testResDto) {
+    public TestResDto addNewTest(@RequestBody TestReqDto testResDto) {
         return testService.addNewTest(testResDto);
     }
 

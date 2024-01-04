@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.swing.text.StyledEditorKit;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,4 +34,5 @@ public class AssignmentResDto {
     private TestResSimpleWithQuestionsDto test;
     private StudentSimpleDto student;
     private List<ResponseResDto> responses;
+    private Boolean isPassed;
 }

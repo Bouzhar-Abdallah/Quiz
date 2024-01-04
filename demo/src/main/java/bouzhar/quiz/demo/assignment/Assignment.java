@@ -33,10 +33,12 @@ public class Assignment {
     private Integer chance;
 
     private boolean result;
+    @Column(columnDefinition = "default false")
+    private Boolean isPassed;
 
     private Float obtainedScore;
     @ManyToOne()
-    
+
     private Test test;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")

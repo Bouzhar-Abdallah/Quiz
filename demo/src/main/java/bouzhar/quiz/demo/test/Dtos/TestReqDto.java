@@ -1,5 +1,6 @@
 package bouzhar.quiz.demo.test.Dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -15,5 +16,6 @@ public class TestReqDto {
     private Integer maxAttempts;
     private String remarks;
     private String instructions;
+    //@NotNull(message = "teacher id cannot be null")
     private Long teacher_id;
 }

@@ -30,6 +30,7 @@ public class PassQuiz {
 
     private TestResSimpleAttributesDto test;
     private StudentSimpleDto student;
+    private Boolean isPassed;
     @JsonIgnore
     private List<ResponseResDto> responses;
     private List<QuestionWithSimpleAnswers> answeredQuestions;

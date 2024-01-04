@@ -40,7 +40,10 @@ public class TestService implements TestServiceSpecification {
     // add new test
     @Override
     public TestResDto addNewTest(TestReqDto testReqDto) {
-        Teacher teacher = teacherRepository.findById(testReqDto.getTeacher_id()).orElseThrow(
+        /*Teacher teacher = teacherRepository.findById(testReqDto.getTeacher_id()).orElseThrow(
+                () -> new ResourceNotFoundException("teacher with id " + testReqDto.getTeacher_id() + " not found")
+        );*/
+        Teacher teacher = teacherRepository.findById(1L).orElseThrow(
                 () -> new ResourceNotFoundException("teacher with id " + testReqDto.getTeacher_id() + " not found")
         );
         Test test = modelMapper.map(testReqDto, Test.class);

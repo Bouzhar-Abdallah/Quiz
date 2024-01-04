@@ -1,6 +1,7 @@
 package bouzhar.quiz.demo.response;
 
 import bouzhar.quiz.demo.response.dto.ResponseReqDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ public class ResponseController {
     }
 
     @PostMapping
-    public ResponseReqDto addResponse(@RequestBody ResponseReqDto responseReqDto){
+    public ResponseReqDto addResponse(@RequestBody @Valid ResponseReqDto responseReqDto){
         return responseService.create(responseReqDto);
     }
     @PostMapping(path = "all")
