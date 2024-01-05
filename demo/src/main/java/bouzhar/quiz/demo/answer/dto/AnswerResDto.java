@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 public class AnswerResDto {
-    private long id;
+    private Long id;
     @NotBlank(message = "Answer cannot be empty")
     private String answer;
     private List<ValidationResNoAnswerDto> validations;

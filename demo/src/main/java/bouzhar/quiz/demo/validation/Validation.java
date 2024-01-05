@@ -13,6 +13,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Validation {
     @EmbeddedId
     @JsonIgnore

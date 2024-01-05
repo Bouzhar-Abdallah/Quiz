@@ -56,8 +56,8 @@ public class ResponseService {
 
         if (question.getType().equals(QuestionType.Single) && responseReqDto.getAnswer_ids().size() > 1)
             throw new RuntimeException("this question may only accept one response");
+
         if (responseReqDto.getAnswer_ids().isEmpty()){
-            System.out.println("here");
             ResponseId responseId = new ResponseId();
             responseId.setAssignmentId(assignment.getId());
             responseId.setQuestionId(question.getId());

@@ -6,7 +6,10 @@ import bouzhar.quiz.demo.question.enums.QuestionType;
 import bouzhar.quiz.demo.subject.Subject;
 import bouzhar.quiz.demo.temporization.Temporization;
 import bouzhar.quiz.demo.validation.Validation;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.io.Serializable;
@@ -18,6 +21,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+
 
 public class Question implements Serializable {
 
@@ -33,22 +37,28 @@ public class Question implements Serializable {
     @Transient
     private Integer correctAnswersCount;
 
-    @NonNull
-    private String text;
 
 
     @NonNull
     @Transient
     private Float scorePoints;
+
+
+    @NonNull
+    @NotBlank(message = "question text is mandatory")
+    private String text;
+
+
     @Enumerated(EnumType.STRING)
     @NonNull
+    @NotBlank(message = "type is mandatory")
     private QuestionType type;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Validation> validations;
 
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Media> medias;
 
     @ManyToOne()

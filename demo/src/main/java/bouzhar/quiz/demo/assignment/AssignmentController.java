@@ -1,10 +1,8 @@
 package bouzhar.quiz.demo.assignment;
 
 import bouzhar.quiz.demo.answer.dto.AnswerResDto;
-import bouzhar.quiz.demo.assignment.Dtos.AssignmentListReqDto;
-import bouzhar.quiz.demo.assignment.Dtos.AssignmentReqDto;
-import bouzhar.quiz.demo.assignment.Dtos.AssignmentResDto;
-import bouzhar.quiz.demo.assignment.Dtos.PassQuiz;
+import bouzhar.quiz.demo.assignment.Dtos.*;
+import bouzhar.quiz.demo.question.dto.QuestionWithValidations;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,10 @@ public class AssignmentController {
     public PassQuiz getAssignment(@PathVariable Long assignment_id) {
         return assignmentService.getAssignment(assignment_id);
     }
-
+    @GetMapping(path = "correction/{assignment_id}")
+    public List<QuestionWithValidations> getAssignmentCorrection(@PathVariable Long assignment_id){
+        return assignmentService.getAssignmentCorrection(assignment_id);
+    }
     // get all assignments
     @GetMapping(path = "getall")
     public List<AssignmentResDto> getAll() {
@@ -74,4 +75,10 @@ public class AssignmentController {
             @RequestParam(defaultValue = "10") int size) {
         return assignmentService.getPaginatedAssignments(page, size);
     }
+
+    @GetMapping(path = "answers/{assignment_id}")
+    public List<?> getAssignmentAnswers(@PathVariable Long assignment_id) {
+        return assignmentService.getAssignmentAnswers(assignment_id);
+    }
+
 }
