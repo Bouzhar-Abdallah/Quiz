@@ -4,10 +4,12 @@ import bouzhar.quiz.demo.student.Student;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
 
 import java.io.Serializable;
 
 @Embeddable
+@Data
 public class ParticipateId implements Serializable {
 
     @ManyToOne

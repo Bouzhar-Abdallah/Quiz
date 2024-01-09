@@ -1,0 +1,4 @@
+"id","duration","instructions","max_attempts","remarks","show_resps","show_results","success_score","title","teacher_id"
+"1",60,"pour chaque question vous devez choisir toute les reponses correctes pour qu'il soit considérée correcte",3,"premier devoir",False,True,"10","devoir 1","1"
+"9",60,"le score de chaque question est la somme des bonnes réponses choisies",2,"deuxieme devoir",False,True,"20","devoir 3","1"
+"10",60,"le score de chaque question est la somme des bonnes réponses choisies",2,"deuxieme devoir",False,True,"20","devoir 4","1"

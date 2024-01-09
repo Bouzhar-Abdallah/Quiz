@@ -1,0 +1,6 @@
+"id","chance","end_date","obtained_score","reason","result","start_date","student_id","test_id","is_passed"
+"3",2,"2024-01-05 00:00:00","15","reason administratif",False,"2023-12-20 00:00:00","1","1",False
+"7",1,"2023-12-20 00:00:00","5","should be true",False,"2023-12-10 00:00:00","2","1",True
+"9",1,"2023-11-15 00:00:00","12","abssence justifié",False,"2023-11-01 00:00:00","2","9",True
+"10",2,"2024-02-15 00:00:00","0","planifié",False,"2024-01-10 00:00:00","2","9",False
+"11",1,"2023-12-15 00:00:00","30",NULL,True,"2023-12-10 00:00:00","2","10",True

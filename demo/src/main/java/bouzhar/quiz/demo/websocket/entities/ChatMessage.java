@@ -8,11 +8,21 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 public class ChatMessage {
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", participate=" + participate +
+                ", timeStamp=" + timeStamp +
+                '}';
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content")
+    @Column()
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,7 +33,7 @@ public class ChatMessage {
     private Participate participate;
 
 
-    @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+    @Column()
+    private LocalDateTime timeStamp;
 
 }

@@ -1,0 +1,13 @@
+"id","text","type","level_id","subject_id"
+"1","Imaginons un site marchand vendant des produits. Les produits sont représentés par une classeProduit. Cette classe contient un attributgarantiequi indique la durée de la garantie en mois. Lequel de ces 3 domaines est le mieux adapté pour cet attribut ?","MultipleChoice","3","1"
+"2","Parmi les éléments suivants, lesquels sont nativement des éléments  inline  qui vont se mettre les uns à la suite des autres sans prendre toute la largeur ?
+
+","MultipleChoice","2","1"
+"3","Parmi ces extraits de code, lequel comporte une syntaxe valide pour créer un paragraphe de texte ?","MultipleChoice","3","2"
+"4","Quelles étapes doit-on suivre pour importer du CSS dans un fichier HTML ?","MultipleChoice","3","1"
+"5","Parmi les affirmations suivantes, laquelle est fausse ?","MultipleChoice","4","1"
+"6","Quelle propriété appliquée sur un élément dans une mise en page Flexbox permet de modifier l'ordre des éléments en les réagençant sans modifier le HTML ?","MultipleChoice","1","1"
+"7","Parmi les affirmations suivantes, laquelle est exacte ?","MultipleChoice","2","1"
+"8","Quelles sont les options offertes par la propriété  display  ?","MultipleChoice","3","1"
+"9","Parmi les valeurs suivantes, lesquelles permettent bien de créer un champ de saisie ? Vous pouvez essayer les différentes options pour voir !","MultipleChoice","3","1"
+"152","Laquelle de ces 3 phrases est cohérente ?","MultipleChoice","4","2"

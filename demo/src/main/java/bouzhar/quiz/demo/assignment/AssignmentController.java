@@ -76,9 +76,9 @@ public class AssignmentController {
         return assignmentService.getPaginatedAssignments(page, size);
     }
 
-    @GetMapping(path = "answers/{assignment_id}")
+    /*@GetMapping(path = "answers/{assignment_id}")
     public List<?> getAssignmentAnswers(@PathVariable Long assignment_id) {
         return assignmentService.getAssignmentAnswers(assignment_id);
-    }
+    }*/
 
 }
