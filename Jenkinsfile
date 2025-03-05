@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'your-credentials-id', url: 'https://github.com/your-username/your-repo.git'
+                git branch: 'main', credentialsId: 'lambidos_github_personal_token', url: 'https://github.com/Bouzhar-Abdallah/Quiz'
             }
         }
 
